@@ -7,11 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
 </script>
 <style>
-/* ============================================================
-   DESIGN SYSTEM — Inspired by Linear / Vercel / Stripe
-   ============================================================ */
 :root {
-  /* Neutrals — warm slate undertone */
   --gray-0: #fafbfc;
   --gray-1: #f4f5f7;
   --gray-2: #ebecf0;
@@ -23,47 +19,31 @@
   --gray-8: #253858;
   --gray-9: #172b4d;
   --gray-10: #091e42;
-  
-  /* Accent — refined indigo-blue */
   --accent: #5b6abf;
   --accent-hover: #4a56a8;
   --accent-soft: #eef0fb;
   --accent-ring: rgba(91,106,191,.18);
-  
-  /* Semantic */
   --red: #e5484d;
   --red-soft: #fef2f2;
   --amber: #d2850b;
   --amber-soft: #fffbeb;
   --green: #30a46c;
   --green-soft: #f1faf6;
-  
-  /* Surfaces */
   --surface: #fff;
   --surface-raised: #fff;
   --bg: #f8f9fb;
-  
-  /* Radii */
   --r-sm: 8px;
   --r-md: 12px;
   --r-lg: 16px;
-  
-  /* Shadows */
   --shadow-card: 0 0 0 1px rgba(9,30,66,.04), 0 1px 1px rgba(9,30,66,.06);
   --shadow-card-hover: 0 0 0 1px rgba(9,30,66,.06), 0 2px 8px rgba(9,30,66,.08);
   --shadow-pop: 0 0 0 1px rgba(9,30,66,.06), 0 8px 24px rgba(9,30,66,.12);
-  
-  /* Layout */
   --sidebar-w: 220px;
   --header-h: 48px;
-  
-  /* Typography */
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-mono: "SF Mono", "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   font-family: var(--font);
   background: var(--bg);
@@ -75,14 +55,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "cv02","cv03","cv04","cv09";
 }
-
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 button { font-family: inherit; cursor: pointer; }
-
-/* ============================================================
-   HEADER
-   ============================================================ */
 .header {
   height: var(--header-h);
   background: var(--surface);
@@ -119,7 +94,6 @@ button { font-family: inherit; cursor: pointer; }
   display: flex; align-items: center; gap: 5px;
 }
 .header-breadcrumb .current { color: var(--gray-7); font-weight: 500; }
-
 .header-right {
   margin-left: auto;
   display: flex; align-items: center; gap: 14px;
@@ -145,7 +119,6 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 12.5px; color: var(--gray-8); width: 100%; font-family: inherit;
 }
 .header-search input::placeholder { color: var(--gray-5); }
-
 .header-btn {
   width: 30px; height: 30px;
   border-radius: 6px;
@@ -185,10 +158,6 @@ button { font-family: inherit; cursor: pointer; }
 .header-user .user-name { font-size: 12px; color: var(--gray-8); font-weight: 500; }
 .header-user .user-role { font-size: 10.5px; color: var(--gray-5); }
 .header-user .chevron { color: var(--gray-5); font-size: 9px; margin-left: 1px; }
-
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
 .sidebar {
   position: fixed;
   top: var(--header-h); left: 0; bottom: 0;
@@ -253,42 +222,17 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--accent-soft);
 }
 .sidebar-menu ul.sub li.sub-active a::before { background: var(--accent); }
-
 .sidebar-divider {
   height: 1px;
   background: var(--gray-2);
   margin: 6px 10px;
 }
-
-/* ============================================================
-   MAIN CONTENT
-   ============================================================ */
 .main {
   margin-left: var(--sidebar-w);
   margin-top: var(--header-h);
   padding: 24px 28px 40px;
   min-height: calc(100vh - var(--header-h));
 }
-
-/* Page Title */
-.page-header {
-  margin-bottom: 20px;
-}
-.page-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--gray-9);
-  letter-spacing: -0.3px;
-}
-.page-subtitle {
-  font-size: 12.5px;
-  color: var(--gray-5);
-  margin-top: 3px;
-}
-
-/* ============================================================
-   FILTER BAR
-   ============================================================ */
 .filter-row {
   display: flex;
   align-items: center;
@@ -358,10 +302,6 @@ button { font-family: inherit; cursor: pointer; }
   transition: background .15s;
 }
 .filter-btn:hover { background: var(--accent-hover); }
-
-/* ============================================================
-   KPI HERO CARDS
-   ============================================================ */
 .kpi-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -406,10 +346,6 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 11.5px; color: var(--green); font-weight: 500; margin-top: 2px;
 }
 .kpi-hero-card .kpi-change.down { color: var(--red); }
-
-/* ============================================================
-   CONTENT GRID
-   ============================================================ */
 .content-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -421,10 +357,6 @@ button { font-family: inherit; cursor: pointer; }
   height: 100%;
 }
 .content-col > :last-child { margin-top: auto; }
-
-/* ============================================================
-   CARD COMPONENT
-   ============================================================ */
 .card {
   background: var(--surface);
   border-radius: var(--r-lg);
@@ -450,10 +382,6 @@ button { font-family: inherit; cursor: pointer; }
 .card-head-action:hover { color: var(--accent-hover); }
 .card-body { padding: 16px 20px; }
 .card-body-flush { padding: 0; }
-
-/* ============================================================
-   PILL TABS
-   ============================================================ */
 .pill-group {
   display: inline-flex;
   background: var(--gray-1);
@@ -478,10 +406,6 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 550;
   box-shadow: 0 1px 2px rgba(9,30,66,.06);
 }
-
-/* ============================================================
-   INFO LIST
-   ============================================================ */
 .info-list {}
 .info-item {
   display: flex; align-items: center; gap: 10px;
@@ -492,9 +416,9 @@ button { font-family: inherit; cursor: pointer; }
 }
 .info-item:last-child { border-bottom: none; }
 .info-item .info-key {
-  color: var(--gray-5); font-size: 12px; white-space: nowrap; min-width: 0;
+  color: var(--gray-5); font-size: 12px; white-space: nowrap; min-width: 64px;
 }
-.info-item .info-val { color: var(--gray-8); flex: 1; }
+.info-item .info-val { color: var(--gray-8); flex: 1; font-size: 12.5px; }
 .info-item .info-chevron {
   color: var(--gray-4);
   width: 22px; height: 22px;
@@ -508,15 +432,11 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--accent);
   background: var(--accent-soft);
 }
-
-/* ============================================================
-   CHART BOX
-   ============================================================ */
 .chart-section {
-  display: flex; align-items: flex-start; gap: 28px;
+  display: flex; align-items: center; gap: 32px;
 }
 .chart-donut-wrap {
-  width: 180px; height: 180px;
+  width: 210px; height: 210px;
   flex-shrink: 0;
   position: relative;
 }
@@ -527,33 +447,37 @@ button { font-family: inherit; cursor: pointer; }
   pointer-events: none;
 }
 .chart-donut-center .chart-big {
-  font-size: 26px; font-weight: 700; color: var(--gray-9);
+  font-size: 28px; font-weight: 700; color: var(--gray-9);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.5px;
+  line-height: 1;
 }
 .chart-donut-center .chart-small {
-  font-size: 10.5px; color: var(--gray-5); font-weight: 500;
+  font-size: 11px; color: var(--gray-5); font-weight: 500;
+  margin-top: 2px;
 }
 .chart-legend-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3px 14px;
-  font-size: 11px;
-  padding-top: 5px;
+  gap: 4px 16px;
+  font-size: 11.5px;
 }
 .chart-legend-item {
-  display: flex; align-items: center; gap: 5px;
-  color: var(--gray-6);
-  padding: 1px 0;
+  display: flex; align-items: center; gap: 6px;
+  color: var(--gray-7);
+  padding: 2px 0;
+  font-weight: 450;
 }
 .chart-legend-dot {
-  width: 6px; height: 6px;
+  width: 8px; height: 8px;
   border-radius: 2px; flex-shrink: 0;
 }
-
-/* ============================================================
-   DATA TABLE
-   ============================================================ */
+.chart-legend-val {
+  color: var(--gray-5);
+  font-size: 10.5px;
+  margin-left: 2px;
+  font-variant-numeric: tabular-nums;
+}
 .table-wrap { overflow-x: auto; }
 .data-table {
   width: 100%;
@@ -591,8 +515,6 @@ button { font-family: inherit; cursor: pointer; }
   cursor: pointer;
 }
 .data-table .cell-link:hover { text-decoration: underline; }
-
-/* Alert row */
 .data-table tr.alert-row { background: var(--red-soft); }
 .data-table tr.alert-row:hover { background: #fef0ef; }
 .data-table tr.alert-row .alert-badge {
@@ -609,10 +531,6 @@ button { font-family: inherit; cursor: pointer; }
   vertical-align: 1px;
 }
 .data-table tr.alert-row .alert-pct { color: var(--red); font-weight: 600; }
-
-/* ============================================================
-   AI BUTTON
-   ============================================================ */
 .ai-btn {
   display: inline-flex; align-items: center; gap: 6px;
   background: var(--gray-9);
@@ -636,10 +554,6 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(94,234,212,.6);
 }
-
-/* ============================================================
-   META INFO
-   ============================================================ */
 .meta-strip {
   display: flex; align-items: center; gap: 16px;
   margin-bottom: 10px;
@@ -655,10 +569,6 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: 12px;
   border-left: 2.5px solid var(--red);
 }
-
-/* ============================================================
-   BOTTOM SECTION
-   ============================================================ */
 .mini-select-row {
   display: flex; gap: 10px; margin-bottom: 14px;
 }
@@ -684,16 +594,10 @@ button { font-family: inherit; cursor: pointer; }
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-ring);
 }
-
-/* ============================================================
-   SCROLLBAR
-   ============================================================ */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--gray-3); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gray-4); }
-
-/* Badge counter */
 .badge-sm {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 16px; height: 16px;
@@ -709,9 +613,6 @@ button { font-family: inherit; cursor: pointer; }
 </head>
 <body>
 
-<!-- ============================================================
-     HEADER
-     ============================================================ -->
 <header class="header">
   <div class="header-brand">
     <div class="brand-mark">检</div>
@@ -735,14 +636,11 @@ button { font-family: inherit; cursor: pointer; }
         <div class="user-name">张三</div>
         <div class="user-role">检查员</div>
       </div>
-      <span class="chevron">▾</span>
+      <span class="chevron">&#9662;</span>
     </div>
   </div>
 </header>
 
-<!-- ============================================================
-     SIDEBAR
-     ============================================================ -->
 <aside class="sidebar">
   <ul class="sidebar-menu">
     <li><a href="#">首页</a></li>
@@ -766,31 +664,24 @@ button { font-family: inherit; cursor: pointer; }
   </ul>
 </aside>
 
-<!-- ============================================================
-     MAIN CONTENT
-     ============================================================ -->
 <main class="main">
 
-  <!-- Filter Bar -->
   <div class="filter-row">
     <span class="filter-label">单位</span>
-    <select class="filter-select"><option>请选择单位名称</option></select>
+    <select class="filter-select"><option>XX市人民检察院</option></select>
     <span class="filter-label">统计区间</span>
     <input class="filter-date" type="text" value="2026-01" placeholder="开始月份">
-    <span class="filter-sep">—</span>
+    <span class="filter-sep">&#8212;</span>
     <input class="filter-date" type="text" value="2026-06" placeholder="结束月份">
     <div class="filter-actions">
       <button class="filter-btn">查询</button>
     </div>
   </div>
 
-  <!-- Two Column Grid -->
   <div class="content-grid">
 
-    <!-- ===== LEFT ===== -->
     <div class="content-col">
 
-      <!-- KPI Hero -->
       <div class="kpi-hero">
         <div class="kpi-hero-card">
           <div class="kpi-icon accent">
@@ -800,7 +691,7 @@ button { font-family: inherit; cursor: pointer; }
             </svg>
           </div>
           <div class="kpi-body">
-            <div class="kpi-label">案源类</div>
+            <div class="kpi-label">办案量</div>
             <div class="kpi-value">304<span class="unit">件</span></div>
             <div class="kpi-change">较上期 +12%</div>
           </div>
@@ -820,72 +711,69 @@ button { font-family: inherit; cursor: pointer; }
         </div>
       </div>
 
-      <!-- 案件质量评查台账 -->
       <div class="card">
         <div class="card-head">
           <span class="card-head-title">案件质量评查台账</span>
-          <span class="card-head-action">查看全部 →</span>
+          <span class="card-head-action">查看全部 &rarr;</span>
         </div>
         <div class="card-body">
           <div class="pill-group">
             <div class="pill active">优质案件 <span class="badge-sm" style="margin-left:3px;">1</span></div>
-            <div class="pill">合格案件</div>
+            <div class="pill">合格案件 <span class="badge-sm" style="margin-left:3px;">2</span></div>
             <div class="pill">基本合格</div>
             <div class="pill">不合格</div>
           </div>
           <div class="info-list">
             <div class="info-item">
               <span class="info-key">部门受案号</span>
-              <span class="info-val" style="font-family:var(--font-mono);font-size:12px;">123****1223</span>
-              <span class="info-chevron">›</span>
+              <span class="info-val" style="font-family:var(--font-mono);font-size:12px;">京X检刑诉〔2026〕018号</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
             <div class="info-item">
-              <span class="info-key">申报内容</span>
-              <span class="info-val"></span>
-              <span class="info-chevron">›</span>
+              <span class="info-key">承办人</span>
+              <span class="info-val">李建国</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
             <div class="info-item">
-              <span class="info-key">评审类型</span>
-              <span class="info-val"></span>
-              <span class="info-chevron">›</span>
+              <span class="info-key">评查类型</span>
+              <span class="info-val">常规评查</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
             <div class="info-item">
-              <span class="info-key">评定结果分类</span>
-              <span class="info-val"></span>
-              <span class="info-chevron">›</span>
+              <span class="info-key">评查结果</span>
+              <span class="info-val" style="color:var(--green);font-weight:550;">优质</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 典型先进 -->
       <div class="card">
         <div class="card-head">
-          <span class="card-head-title">典型先进</span>
-          <span class="card-head-action">查看全部 →</span>
+          <span class="card-head-title">典型先进事迹</span>
+          <span class="card-head-action">查看全部 &rarr;</span>
         </div>
         <div class="card-body">
           <div class="pill-group">
-            <div class="pill active">指导性案例发布 <span class="badge-sm" style="margin-left:3px;">1</span></div>
-            <div class="pill">表彰奖励</div>
-            <div class="pill">先进工作经验</div>
+            <div class="pill active">指导性案例 <span class="badge-sm" style="margin-left:3px;">1</span></div>
+            <div class="pill">表彰奖励 <span class="badge-sm" style="margin-left:3px;">2</span></div>
+            <div class="pill">先进经验</div>
           </div>
           <div class="info-list">
             <div class="info-item">
               <span class="info-key">申报对象</span>
-              <span class="info-val"></span>
-              <span class="info-chevron">›</span>
+              <span class="info-val">第二检察部 王丽华</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
             <div class="info-item">
-              <span class="info-key">申报内容</span>
-              <span class="info-val"></span>
-              <span class="info-chevron">›</span>
+              <span class="info-key">事迹摘要</span>
+              <span class="info-val">办理某跨境电信诈骗案入选最高检典型案例</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 被追究司法责任 -->
       <div class="card">
         <div class="card-head">
           <span class="card-head-title">被追究司法责任</span>
@@ -893,30 +781,28 @@ button { font-family: inherit; cursor: pointer; }
         </div>
         <div class="card-body">
           <div class="pill-group">
-            <div class="pill active">指导性案例发布 <span class="badge-sm" style="margin-left:3px;">1</span></div>
-            <div class="pill">表彰奖励</div>
-            <div class="pill">先进工作经验</div>
+            <div class="pill active">错案追究</div>
+            <div class="pill">违纪违规</div>
+            <div class="pill">程序违法</div>
           </div>
           <div class="info-list">
             <div class="info-item">
-              <span class="info-key">被申报对象</span>
-              <span class="info-val"></span>
-              <span class="info-chevron">›</span>
+              <span class="info-key">涉及对象</span>
+              <span class="info-val" style="color:var(--gray-4);">本统计周期内无记录</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
             <div class="info-item">
-              <span class="info-key">申报内容</span>
-              <span class="info-val"></span>
-              <span class="info-chevron">›</span>
+              <span class="info-key">事由摘要</span>
+              <span class="info-val" style="color:var(--gray-4);">&#8212;</span>
+              <span class="info-chevron">&#8250;</span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== RIGHT ===== -->
     <div class="content-col">
 
-      <!-- 案件类型分布 -->
       <div class="card">
         <div class="card-head">
           <span class="card-head-title">案件类型分布</span>
@@ -935,7 +821,6 @@ button { font-family: inherit; cursor: pointer; }
         </div>
       </div>
 
-      <!-- 各条线业绩指标占比分布 -->
       <div class="card">
         <div class="card-head">
           <span class="card-head-title">各条线业绩指标占比分布</span>
@@ -945,7 +830,7 @@ button { font-family: inherit; cursor: pointer; }
         </div>
         <div class="card-body">
           <div class="meta-strip">
-            <span>2026.01 — 2026.03</span>
+            <span>2026.01 &#8212; 2026.03</span>
             <span>总分 <strong>1,000.01</strong></span>
           </div>
           <div class="alert-strip">
@@ -1007,14 +892,14 @@ button { font-family: inherit; cursor: pointer; }
                 </tr>
                 <tr>
                   <td>案件管理</td>
-                  <td class="center">—</td>
+                  <td class="center">&#8212;</td>
                   <td class="center">1,000</td>
                   <td class="center">5.0%</td>
                   <td class="center"><span class="cell-link">详情</span></td>
                 </tr>
                 <tr>
                   <td>检察综合</td>
-                  <td class="center">—</td>
+                  <td class="center">&#8212;</td>
                   <td class="center">1,000</td>
                   <td class="center">5.0%</td>
                   <td class="center"><span class="cell-link">详情</span></td>
@@ -1034,7 +919,6 @@ button { font-family: inherit; cursor: pointer; }
     </div>
   </div>
 
-  <!-- ===== Bottom: 指标得分详情 ===== -->
   <div class="card">
     <div class="card-head">
       <span class="card-head-title">指标得分详情</span>
@@ -1045,7 +929,7 @@ button { font-family: inherit; cursor: pointer; }
         <select class="mini-select"><option>全部业务类型</option></select>
       </div>
       <div class="pill-group">
-        <div class="pill active">全部 <span class="badge-sm" style="margin-left:3px;">3</span></div>
+        <div class="pill active">全部 <span class="badge-sm" style="margin-left:3px;">6</span></div>
         <div class="pill">扣分指标</div>
         <div class="pill">直空指标</div>
       </div>
@@ -1077,14 +961,14 @@ button { font-family: inherit; cursor: pointer; }
             </tr>
             <tr>
               <td>民事检察</td>
-              <td>民事诉讼监督案件质量</td>
+              <td>民事诉讼监督案件质量指标</td>
               <td class="center">手动录入</td>
               <td class="center">40.00</td>
               <td class="center">5</td>
             </tr>
             <tr>
               <td>行政检察</td>
-              <td>行政诉讼监督案件质量</td>
+              <td>行政诉讼监督案件质量指标</td>
               <td class="center">自动取值</td>
               <td class="center">40.00</td>
               <td class="center">3</td>
@@ -1098,7 +982,7 @@ button { font-family: inherit; cursor: pointer; }
             </tr>
             <tr>
               <td>控告申诉</td>
-              <td>控告申诉案件办理质量</td>
+              <td>控告申诉案件办理质量指标</td>
               <td class="center">自动取值</td>
               <td class="center">25.00</td>
               <td class="center">6</td>
@@ -1111,16 +995,12 @@ button { font-family: inherit; cursor: pointer; }
 
 </main>
 
-<!-- ============================================================
-     CHART.JS
-     ============================================================ -->
 <script>
 (function() {
-  // Sophisticated color palette — muted, professional, WCAG-friendly
   var CHART_COLORS = [
-    '#7c8bd6', '#6aa1d8', '#5eb3b3', '#78c9a6', '#a8c97a',
-    '#d4b85c', '#e8945c', '#e0737a', '#c472b8', '#9a7cc4',
-    '#7c9bb5'
+    '#8899cc', '#74a8d4', '#62b8b0', '#84c9a4', '#adcb80',
+    '#d0b860', '#e89460', '#dc767c', '#c472b8', '#9a80c0',
+    '#7e98b0'
   ];
 
   var data = [
@@ -1137,18 +1017,21 @@ button { font-family: inherit; cursor: pointer; }
     { label: '法律政策',  value: 62  }
   ];
 
+  var total = data.reduce(function(s, d) { return s + d.value; }, 0);
   var colors = data.map(function(_, i) { return CHART_COLORS[i % CHART_COLORS.length]; });
 
-  // Build legend
   var legendEl = document.getElementById('chartLegend');
   data.forEach(function(d, i) {
+    var pct = ((d.value / total) * 100).toFixed(1);
     var item = document.createElement('div');
     item.className = 'chart-legend-item';
-    item.innerHTML = '<span class="chart-legend-dot" style="background:' + colors[i] + '"></span>' + d.label;
+    item.innerHTML =
+      '<span class="chart-legend-dot" style="background:' + colors[i] + '"></span>' +
+      d.label +
+      '<span class="chart-legend-val">' + pct + '%</span>';
     legendEl.appendChild(item);
   });
 
-  // Chart
   var ctx = document.getElementById('donutChart').getContext('2d');
   new Chart(ctx, {
     type: 'doughnut',
@@ -1158,29 +1041,51 @@ button { font-family: inherit; cursor: pointer; }
         data: data.map(function(d) { return d.value; }),
         backgroundColor: colors,
         borderColor: '#fff',
-        borderWidth: 2,
-        hoverBorderWidth: 2.5,
+        borderWidth: 3.5,
+        hoverBorderWidth: 4,
         hoverBorderColor: '#fff',
-        borderRadius: 3
+        hoverBackgroundColor: colors.map(function(c) { return c; }),
+        borderRadius: 3,
+        spacing: 2
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
-      cutout: '65%',
+      cutout: '52%',
+      onHover: function(evt, els) {
+        evt.native.target.style.cursor = els.length ? 'pointer' : 'default';
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#172b4d',
-          titleFont: { family: '-apple-system, sans-serif', size: 11, weight: '500' },
-          bodyFont: { family: '-apple-system, sans-serif', size: 13, weight: '500' },
-          padding: 10,
-          cornerRadius: 8,
+          backgroundColor: 'rgba(23,43,77,0.94)',
+          titleColor: '#c1c7d0',
+          bodyColor: '#fff',
+          titleFont: {
+            family: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
+            size: 11.5,
+            weight: '500'
+          },
+          bodyFont: {
+            family: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
+            size: 14,
+            weight: '600'
+          },
+          padding: 12,
+          cornerRadius: 10,
           displayColors: true,
-          boxPadding: 3,
+          boxWidth: 10,
+          boxHeight: 10,
+          boxPadding: 4,
+          usePointStyle: false,
+          titleMarginBottom: 6,
+          bodySpacing: 2,
           callbacks: {
+            title: function(items) { return items[0].label; },
             label: function(ctx) {
-              return '  ' + ctx.parsed + ' 件';
+              var pct = ((ctx.parsed / total) * 100).toFixed(1);
+              return ctx.parsed + ' 件  \u00b7  ' + pct + '%';
             }
           }
         }
@@ -1188,7 +1093,7 @@ button { font-family: inherit; cursor: pointer; }
       animation: {
         animateScale: true,
         animateRotate: true,
-        duration: 900,
+        duration: 800,
         easing: 'easeOutCubic'
       }
     }

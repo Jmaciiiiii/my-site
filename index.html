@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1440">
-<title>检察机关绩效管理平台</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
-</script>
+<title>数智绩效管理平台</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  /* === Gray scale (neutral) === */
+  /* Gray scale */
   --gray-0: #f8f9fb;
   --gray-1: #f0f2f5;
   --gray-2: #e4e7ed;
@@ -20,7 +19,7 @@
   --gray-8: #2c3440;
   --gray-9: #1a1f2b;
 
-  /* === Primary — Tech Blue === */
+  /* Primary */
   --primary:       #4A90E2;
   --primary-hover: #357ABD;
   --primary-dark:  #2868A8;
@@ -28,7 +27,7 @@
   --primary-ring:  rgba(74,144,226,0.22);
   --primary-gradient: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
 
-  /* === Semantic status === */
+  /* Semantic */
   --green:      #2ECC71;
   --green-hover:#27AE60;
   --green-soft: #E9F7EF;
@@ -42,12 +41,15 @@
   --teal:       #1ABC9C;
   --teal-soft:  #E8F8F5;
 
-  /* === Surface & Layout === */
+  /* Surface & Layout */
   --surface: #fff;
   --bg:      #f3f5f9;
   --r-sm: 6px;
   --r-md: 10px;
   --r-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 18px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 36px rgba(0,0,0,0.12);
   --shadow-card: 0 0 0 1px rgba(0,0,0,.03), 0 1px 3px rgba(0,0,0,.06);
   --shadow-card-hover: 0 0 0 1px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.09);
   --shadow-pop: 0 0 0 1px rgba(0,0,0,.05), 0 12px 32px rgba(0,0,0,.14);
@@ -72,6 +74,18 @@ body {
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 button { font-family: inherit; cursor: pointer; }
+
+/* View containers */
+.view-container { display: none; }
+.view-container.view-active { display: block; }
+#login-view.view-active { display: flex; }
+
+.bc-link { color: var(--primary); cursor: pointer; }
+.bc-link:hover { text-decoration: underline; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-4); }
 
 /* ================================================================
    HEADER
@@ -153,6 +167,8 @@ button { font-family: inherit; cursor: pointer; }
 .header-user .user-name { font-size: 12px; color: var(--gray-8); font-weight: 500; }
 .header-user .user-role { font-size: 10.5px; color: var(--gray-5); }
 .header-user .chevron { color: var(--gray-5); font-size: 9px; margin-left: 1px; }
+
+
 
 /* ================================================================
    SIDEBAR  (Stripe/Linear grade)
@@ -250,6 +266,341 @@ button { font-family: inherit; cursor: pointer; }
   margin-right: 8px; flex-shrink: 0;
 }
 
+
+
+/* ================================================================
+   LOGIN VIEW
+   ================================================================ */
+/* ================================================================
+   FULLSCREEN CONTAINER
+   ================================================================ */
+.login-wrap {
+  display: flex; width: 100%; height: 100vh;
+}
+
+/* ================================================================
+   LEFT VISUAL AREA (60%) — Dark tech gradient + geometry
+   ================================================================ */
+.login-visual {
+  flex: 0 0 60%; position: relative; overflow: hidden;
+  background: linear-gradient(160deg, #0B1A33 0%, #12294A 25%, #1A3D6E 50%, #1E4D82 75%, #225B8F 100%);
+}
+
+/* Large soft glow orbs */
+.glow-orb {
+  position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0;
+}
+.glow-orb:nth-child(1) {
+  width: 340px; height: 340px; top: -100px; left: -80px;
+  background: rgba(74,144,226,0.14);
+}
+.glow-orb:nth-child(2) {
+  width: 260px; height: 260px; bottom: -120px; right: -40px;
+  background: rgba(53,122,189,0.10);
+}
+
+/* Animated grid overlay */
+.grid-overlay {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: gridShift 24s linear infinite;
+}
+@keyframes gridShift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 64px 64px, 64px 64px; }
+}
+
+/* Diagonal accent lines */
+.diagonal-lines {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(135deg, transparent 49.5%, rgba(74,144,226,0.09) 49.5%, rgba(74,144,226,0.09) 50.5%, transparent 50.5%) 0 0 / 220px 220px,
+    linear-gradient(135deg, transparent 49.5%, rgba(74,144,226,0.05) 49.5%, rgba(74,144,226,0.05) 50.5%, transparent 50.5%) 90px 110px / 260px 260px;
+}
+
+/* Central geometric accent ring */
+.geo-accent {
+  position: absolute; z-index: 2; pointer-events: none;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 340px; height: 340px; border-radius: 50%;
+  border: 1.5px solid rgba(74,144,226,0.16);
+  box-shadow: 0 0 90px rgba(74,144,226,0.06), inset 0 0 90px rgba(74,144,226,0.03);
+  animation: pulseRing 7s ease-in-out infinite;
+}
+.geo-accent::before {
+  content: '';
+  position: absolute; inset: 44px; border-radius: 50%;
+  border: 1px solid rgba(74,144,226,0.10);
+  animation: pulseRing 7s ease-in-out 1.8s infinite;
+}
+.geo-accent::after {
+  content: '';
+  position: absolute; inset: 88px; border-radius: 50%;
+  border: 0.5px solid rgba(74,144,226,0.07);
+  animation: pulseRing 7s ease-in-out 3.5s infinite;
+}
+@keyframes pulseRing {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* Hexagon cluster */
+.hex-cluster {
+  position: absolute; z-index: 2; pointer-events: none;
+  top: 34%; left: 46%; transform: translate(-50%, -50%);
+}
+.hex {
+  position: absolute;
+  width: 50px; height: 56px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: 1px solid rgba(74,144,226,0.14);
+  background: rgba(74,144,226,0.06);
+  transition: all 1.5s;
+}
+.hex:nth-child(1) { top: -32px; left: 50px; }
+.hex:nth-child(2) { top: 10px;  left: 0px; }
+.hex:nth-child(3) { top: 10px;  left: 100px; }
+.hex:nth-child(4) { top: 52px; left: 0px; }
+.hex:nth-child(5) { top: 52px; left: 100px; }
+.hex:nth-child(6) { top: 50px; left: 50px; background: rgba(74,144,226,0.15); border-color: rgba(74,144,226,0.35); }
+.hex:nth-child(7) { top: 92px; left: 50px; }
+
+/* Floating particles */
+.particles {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+}
+.particle {
+  position: absolute; border-radius: 50%;
+  background: rgba(74,144,226,0.30);
+  animation: float 12s ease-in-out infinite;
+}
+.particle:nth-child(1) { width: 2px; height: 2px; top: 15%; left: 20%; animation-delay: 0s; }
+.particle:nth-child(2) { width: 3px; height: 3px; top: 25%; left: 55%; animation-delay: 1.5s; animation-duration: 14s; }
+.particle:nth-child(3) { width: 2px; height: 2px; top: 50%; left: 32%; animation-delay: 3s; animation-duration: 10s; }
+.particle:nth-child(4) { width: 4px; height: 4px; top: 36%; left: 70%; animation-delay: 2s; animation-duration: 17s; }
+.particle:nth-child(5) { width: 2px; height: 2px; top: 62%; left: 45%; animation-delay: 4s; animation-duration: 13s; }
+.particle:nth-child(6) { width: 3px; height: 3px; top: 74%; left: 26%; animation-delay: 5.5s; animation-duration: 15s; }
+.particle:nth-child(7) { width: 2px; height: 2px; top: 20%; left: 78%; animation-delay: 2.8s; animation-duration: 11s; }
+.particle:nth-child(8) { width: 3px; height: 3px; top: 58%; left: 60%; animation-delay: 4.2s; animation-duration: 16s; }
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.25; }
+  25% { transform: translate(18px, -24px) scale(1.7); opacity: 0.8; }
+  50% { transform: translate(-12px, -40px) scale(1); opacity: 0.35; }
+  75% { transform: translate(-20px, -12px) scale(1.5); opacity: 0.7; }
+}
+
+/* ================================================================
+   RIGHT FORM AREA (40%)
+   ================================================================ */
+.login-form-area {
+  flex: 0 0 40%; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 50%, #fff 100%);
+  position: relative; z-index: 1;
+}
+.login-card {
+  width: 400px; background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-radius: 20px;
+  padding: 50px 44px 38px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 8px 44px rgba(0,0,0,0.10), 0 2px 14px rgba(0,0,0,0.04);
+}
+
+/* Title */
+.login-title {
+  font-size: 24px; font-weight: 700; color: var(--gray-9);
+  text-align: center; margin-bottom: 6px;
+  letter-spacing: -0.2px;
+}
+.login-subtitle {
+  font-size: 13px; color: var(--gray-4); text-align: center;
+  margin-bottom: 38px; font-weight: 400;
+}
+
+/* Form fields */
+.form-group { margin-bottom: 20px; }
+.form-label {
+  display: block; font-size: 12.5px; font-weight: 500;
+  color: var(--gray-6); margin-bottom: 7px;
+}
+.form-input {
+  width: 100%; height: 44px;
+  border: 1.5px solid var(--gray-3);
+  border-radius: 10px; padding: 0 16px;
+  font-size: 14px; color: var(--gray-9);
+  font-family: var(--font);
+  background: #fff;
+  transition: all 0.15s; outline: none;
+}
+.form-input::placeholder { color: var(--gray-4); }
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(74,144,226,0.12);
+}
+
+/* Row: remember + forgot */
+.form-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px; font-size: 13px;
+}
+.form-row label {
+  display: flex; align-items: center; gap: 7px;
+  color: var(--gray-6); cursor: pointer;
+}
+.form-row input[type="checkbox"] {
+  accent-color: var(--primary); width: 15px; height: 15px; cursor: pointer;
+}
+.form-row .forgot-link {
+  color: var(--primary); font-weight: 500; cursor: pointer; text-decoration: none;
+  transition: color .12s;
+}
+.form-row .forgot-link:hover { color: var(--primary-hover); text-decoration: underline; }
+
+/* Login button */
+.btn-login {
+  width: 100%; height: 46px; border: none; border-radius: 10px;
+  background: var(--primary-gradient);
+  color: #fff; font-size: 16px; font-weight: 600;
+  font-family: var(--font); cursor: pointer;
+  letter-spacing: 4px;
+  transition: all .15s;
+  box-shadow: 0 4px 18px rgba(74,144,226,0.30);
+}
+.btn-login:hover {
+  box-shadow: 0 6px 26px rgba(74,144,226,0.45);
+  transform: translateY(-1px);
+}
+.btn-login:active { transform: translateY(0); }
+
+/* Footer */
+.login-footer {
+  text-align: center; margin-top: 34px;
+  font-size: 11.5px; color: var(--gray-5);
+  line-height: 1.6;
+}
+
+/* ================================================================
+   WORKBENCH VIEW
+   ================================================================ */
+
+
+
+
+
+/* ================================================================
+   MAIN CONTENT
+   ================================================================ */
+.wb-main {
+  margin-left: var(--sidebar-w); margin-top: var(--header-h); padding: 32px 34px 52px;
+}
+body.wb-mode .wb-main {
+  margin-left: auto; margin-right: auto; margin-top: 0;
+  max-width: 1200px; padding: 60px 34px 52px;
+}
+
+/* Section */
+.wb-section { margin-bottom: 40px; }
+.wb-section-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 16px; font-weight: 700; color: var(--gray-9);
+  margin-bottom: 20px;
+}
+.wb-section-title::before {
+  content: ''; display: inline-block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--primary);
+}
+
+/* Card grid */
+.wb-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(288px, 1fr));
+  gap: 15px;
+}
+
+/* ================================================================
+   CARD — Integrated capsule button + geometric SVG
+   ================================================================ */
+.wb-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 18px 18px 18px 15px;
+  display: flex; align-items: center; gap: 15px;
+  cursor: pointer;
+  transition: all .20s ease;
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-sm);
+}
+.wb-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.10);
+  border-color: #e2e8f0;
+}
+.wb-card:active { transform: translateY(0); }
+
+/* Capsule button — fused with card, no divider. Number instead of icon. */
+.wb-card-btn {
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  border-radius: 26px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 14px; font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+  transition: all .16s;
+}
+.wb-card:hover .wb-card-btn {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+/* Card label */
+.wb-card-label {
+  flex-shrink: 0;
+  font-size: 14px; font-weight: 600; color: var(--gray-8);
+  white-space: nowrap;
+}
+
+/* Card SVG illustration area */
+.wb-card-illus {
+  flex: 1; height: 50px;
+  display: flex; align-items: center; justify-content: flex-end;
+}
+.wb-card-illus svg { width: 58px; height: 46px; }
+
+/* ================================================================
+   Button color variants — 18 distinct hues, no gray
+   ================================================================ */
+
+/* Blue spectrum (module 1 & 3) */
+.cb-blue     { background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); }
+.cb-indigo   { background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%); }
+.cb-sky      { background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%); }
+.cb-azure    { background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); }
+.cb-deep     { background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%); }
+.cb-purple   { background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); }
+.cb-lblue    { background: linear-gradient(135deg, #5B9EE8 0%, #4988D4 100%); }
+.cb-dpurple  { background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%); }
+.cb-slate    { background: linear-gradient(135deg, #4B7FB8 0%, #3A68A0 100%); }
+.cb-royal    { background: linear-gradient(135deg, #4F46E5 0%, #3730A3 100%); }
+.cb-sapphire { background: linear-gradient(135deg, #1E71C9 0%, #155CA0 100%); }
+
+/* Green / teal spectrum (module 2) */
+.cb-green    { background: linear-gradient(135deg, #2ECC71 0%, #22C55E 100%); }
+.cb-emerald  { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
+.cb-dgreen   { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+.cb-teal     { background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%); }
+.cb-cyan     { background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%); }
+.cb-lgreen   { background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%); }
+.cb-dteal    { background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%); }
+.cb-vcyan    { background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%); }
+.cb-mint     { background: linear-gradient(135deg, #34D399 0%, #10B981 100%); }
+
+/* ================================================================
+   REPORT VIEW
+   ================================================================ */
 /* ================================================================
    MAIN
    ================================================================ */
@@ -292,6 +643,24 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: 0 2px 6px rgba(74,144,226,0.25);
 }
 .filter-btn:hover { box-shadow: 0 4px 12px rgba(74,144,226,0.4); transform: translateY(-1px); }
+
+/* Back to workbench button */
+.back-btn {
+  height: 32px; padding: 0 18px; border-radius: 20px;
+  border: 1.5px solid var(--primary);
+  background: transparent;
+  color: var(--primary); font-size: 12.5px; font-weight: 500;
+  font-family: inherit; cursor: pointer;
+  transition: all .18s; margin-left: 10px;
+}
+.back-btn:hover {
+  background: var(--primary-gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 10px rgba(74,144,226,0.30);
+  transform: translateY(-1px);
+}
+.back-btn:active { transform: translateY(0); }
 
 /* ================================================================
    KPI HERO
@@ -405,7 +774,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .chart-donut-center .chart-big { font-size: 28px; font-weight: 700; color: var(--gray-9); letter-spacing: -0.5px; line-height: 1; }
 .chart-donut-center .chart-small { font-size: 11px; color: var(--gray-5); font-weight: 500; margin-top: 3px; }
-.chart-legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; font-size: 11.5px; }
+.chart-legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; font-size: 11.5px; margin-left: 48px; }
 .chart-legend-item { display: flex; align-items: center; gap: 6px; color: var(--gray-7); padding: 2px 0; font-weight: 450; }
 .chart-legend-dot { width: 9px; height: 9px; border-radius: 2.5px; flex-shrink: 0; }
 .chart-legend-val { color: var(--gray-5); font-size: 10.5px; margin-left: 2px; font-variant-numeric: tabular-nums; }
@@ -480,10 +849,10 @@ button { font-family: inherit; cursor: pointer; }
   transition: border-color .15s, box-shadow .15s;
 }
 .mini-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-ring); }
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--gray-3); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gray-4); }
+
+
+
+
 .badge-sm {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 18px; height: 18px; border-radius: 9px;
@@ -758,18 +1127,17 @@ button { font-family: inherit; cursor: pointer; }
 .ai-insight strong { color: var(--gray-9); }
 .ai-insight .highlight-up { color: var(--green); font-weight: 600; }
 .ai-insight .highlight-down { color: var(--red); font-weight: 600; }
-
 </style>
 </head>
 <body>
 
-<header class="header">
+<header class="header" id="sharedHeader" style="display:none">
   <div class="header-brand">
     <div class="brand-mark">检</div>
     检察机关绩效管理平台
   </div>
   <nav class="header-breadcrumb">
-    指标管理 / 履职情况分析 / <span class="current">本院履职情况</span>
+    <span id="breadcrumbBack" class="bc-link">首页</span> &gt; <span id="breadcrumbCurrent" class="current">工作台</span>
   </nav>
   <div class="header-right">
     <label class="header-search">
@@ -791,7 +1159,7 @@ button { font-family: inherit; cursor: pointer; }
   </div>
 </header>
 
-<aside class="sidebar">
+<aside class="sidebar" id="sharedSidebar" style="display:none">
 
   <ul class="sidebar-menu">
     <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>首页</a></li>
@@ -821,6 +1189,128 @@ button { font-family: inherit; cursor: pointer; }
 
 </aside>
 
+<!-- ================================================================
+     LOGIN VIEW
+     ================================================================ -->
+<div id="login-view" class="view-container view-active">
+<div class="login-wrap">
+
+  <!-- ===== LEFT: Dark tech visual ===== -->
+  <div class="login-visual">
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+    <div class="grid-overlay"></div>
+    <div class="diagonal-lines"></div>
+    <div class="geo-accent"></div>
+    <div class="hex-cluster">
+      <div class="hex"></div><div class="hex"></div><div class="hex"></div>
+      <div class="hex"></div><div class="hex"></div><div class="hex"></div><div class="hex"></div>
+    </div>
+    <div class="particles">
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      <div class="particle"></div><div class="particle"></div>
+    </div>
+  </div>
+
+  <!-- ===== RIGHT: Login form ===== -->
+  <div class="login-form-area">
+    <div class="login-card">
+      <div class="login-title">数智绩效管理平台</div>
+      <div class="login-subtitle">检察机关绩效考核数字化系统</div>
+
+      <div class="form-group">
+        <label class="form-label">账号</label>
+        <input class="form-input" type="text" placeholder="请输入账号">
+      </div>
+      <div class="form-group">
+        <label class="form-label">密码</label>
+        <input class="form-input" type="password" placeholder="请输入密码">
+      </div>
+
+      <div class="form-row">
+        <label><input type="checkbox"> 记住密码</label>
+        <a class="forgot-link" href="#">忘记密码</a>
+      </div>
+
+      <button class="btn-login" onclick="showView('workbench-view')">登 录</button>
+
+      <div class="login-footer">
+        技术支持：中汇数智 绩效服务热线:400-6999-529
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ================================================================
+     WORKBENCH VIEW
+     ================================================================ -->
+<div id="workbench-view" class="view-container">
+<main class="wb-main">
+
+  <!-- ===== MODULE 1: 检察官管理 (10 cards) ===== -->
+  <div class="wb-section">
+    <div class="wb-section-title">检察官管理</div>
+    <div class="wb-card-grid">
+
+      <!-- 1 --><div class="wb-card"><div class="wb-card-btn cb-blue">01</div><div class="wb-card-label">指标清单</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="2" y="4" width="24" height="18" rx="3" fill="none" stroke="#4A90E2" stroke-width="1.2" opacity=".2"/><rect x="30" y="4" width="24" height="18" rx="3" fill="#4A90E2" opacity=".06" stroke="#4A90E2" stroke-width="1"/><rect x="6" y="28" width="16" height="4" rx="2" fill="#4A90E2" opacity=".5"/><rect x="33" y="28" width="10" height="4" rx="2" fill="#4A90E2" opacity=".35"/><rect x="46" y="28" width="6" height="4" rx="2" fill="#4A90E2" opacity=".2"/></svg></div></div>
+      <!-- 2 --><div class="wb-card"><div class="wb-card-btn cb-indigo">02</div><div class="wb-card-label">申报审批</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><circle cx="14" cy="14" r="10" fill="none" stroke="#6366F1" stroke-width="1.2" opacity=".15"/><polyline points="12,26 20,34 38,16" fill="none" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <!-- 3 --><div class="wb-card"><div class="wb-card-btn cb-sky">03</div><div class="wb-card-label">考核得分查询</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="2" y="22" width="42" height="3" rx="1.5" fill="#0EA5E9" opacity=".2"/><rect x="2" y="12" width="32" height="7" rx="2" fill="#0EA5E9" opacity=".08" stroke="#0EA5E9" stroke-width="1"/><rect x="2" y="30" width="22" height="7" rx="2" fill="#0EA5E9" opacity=".06" stroke="#0EA5E9" stroke-width=".8" opacity=".6"/></svg></div></div>
+      <!-- 4 --><div class="wb-card"><div class="wb-card-btn cb-azure">04</div><div class="wb-card-label">单位测评</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="4" y="8" width="14" height="28" rx="4" fill="#3B82F6" opacity=".06" stroke="#3B82F6" stroke-width="1"/><rect x="22" y="14" width="14" height="22" rx="4" fill="#3B82F6" opacity=".09" stroke="#3B82F6" stroke-width="1"/><rect x="40" y="20" width="14" height="16" rx="4" fill="#3B82F6" opacity=".12" stroke="#3B82F6" stroke-width="1"/></svg></div></div>
+      <!-- 5 --><div class="wb-card" data-view="report"><div class="wb-card-btn cb-deep">05</div><div class="wb-card-label">本院履职情况</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="8" y="4" width="38" height="30" rx="6" fill="#2563EB" opacity=".05" stroke="#2563EB" stroke-width="1"/><line x1="18" y1="14" x2="36" y2="14" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round"/><line x1="18" y1="21" x2="32" y2="21" stroke="#2563EB" stroke-width="1.4" stroke-linecap="round" opacity=".65"/><circle cx="14" cy="14" r="2.5" fill="#2563EB"/></svg></div></div>
+      <!-- 6 --><div class="wb-card"><div class="wb-card-btn cb-purple">06</div><div class="wb-card-label">职教分析</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><polygon points="28,4 54,20 28,36 2,20" fill="#8B5CF6" opacity=".06" stroke="#8B5CF6" stroke-width="1"/><circle cx="28" cy="20" r="6" fill="#fff" stroke="#8B5CF6" stroke-width="1.5"/><line x1="28" y1="15" x2="28" y2="25" stroke="#8B5CF6" stroke-width="1.5"/><line x1="23" y1="20" x2="33" y2="20" stroke="#8B5CF6" stroke-width="1.5"/></svg></div></div>
+      <!-- 7 --><div class="wb-card"><div class="wb-card-btn cb-lblue">07</div><div class="wb-card-label">申报管理</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="4" y="8" width="30" height="30" rx="5" fill="#5B9EE8" opacity=".06" stroke="#5B9EE8" stroke-width="1"/><rect x="38" y="18" width="16" height="20" rx="4" fill="#5B9EE8" opacity=".09" stroke="#5B9EE8" stroke-width="1"/></svg></div></div>
+      <!-- 8 --><div class="wb-card"><div class="wb-card-btn cb-dpurple">08</div><div class="wb-card-label">档案管理</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><path d="M8,6 h30 v14 H8 Z" fill="#7C3AED" opacity=".07" stroke="#7C3AED" stroke-width="1" rx="4"/><path d="M13,20 h20 v22 H13 Z" fill="#7C3AED" opacity=".04" stroke="#7C3AED" stroke-width="1" rx="3"/></svg></div></div>
+      <!-- 9 --><div class="wb-card"><div class="wb-card-btn cb-slate">09</div><div class="wb-card-label">个人履职情况</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><circle cx="20" cy="16" r="9" fill="#4B7FB8" opacity=".06" stroke="#4B7FB8" stroke-width="1"/><path d="M6,36 Q20,24 34,36" fill="none" stroke="#4B7FB8" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <!-- 10 --><div class="wb-card"><div class="wb-card-btn cb-royal">10</div><div class="wb-card-label">部门履职情况</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="3" y="14" width="12" height="22" rx="3" fill="#4F46E5" opacity=".06" stroke="#4F46E5" stroke-width="1"/><rect x="18" y="8" width="12" height="28" rx="3" fill="#4F46E5" opacity=".08" stroke="#4F46E5" stroke-width="1"/><rect x="33" y="4" width="12" height="32" rx="3" fill="#4F46E5" opacity=".10" stroke="#4F46E5" stroke-width="1"/><rect x="48" y="20" width="6" height="16" rx="2" fill="#4F46E5" opacity=".2"/></svg></div></div>
+
+    </div>
+  </div>
+
+  <!-- ===== MODULE 2: 两类人员管理 (9 cards) ===== -->
+  <div class="wb-section">
+    <div class="wb-section-title">两类人员管理</div>
+    <div class="wb-card-grid">
+
+      <!-- 1 --><div class="wb-card"><div class="wb-card-btn cb-green">01</div><div class="wb-card-label">计分方案配置</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><circle cx="28" cy="22" r="14" fill="#2ECC71" opacity=".05" stroke="#2ECC71" stroke-width="1"/><line x1="28" y1="10" x2="28" y2="34" stroke="#2ECC71" stroke-width="1.5" opacity=".45"/><line x1="14" y1="22" x2="42" y2="22" stroke="#2ECC71" stroke-width="1.5" opacity=".45"/><circle cx="28" cy="14" r="3.5" fill="#2ECC71"/></svg></div></div>
+      <!-- 2 --><div class="wb-card"><div class="wb-card-btn cb-emerald">02</div><div class="wb-card-label">年度综合评价</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><path d="M4,32 L8,30 L8,18 Q6,16 4,18 Z" fill="#10B981" opacity=".08" stroke="#10B981" stroke-width="1"/><path d="M20,32 L24,30 L24,10 Q22,8 20,10 Z" fill="#10B981" opacity=".10" stroke="#10B981" stroke-width="1"/><path d="M36,32 L40,30 L40,22 Q38,20 36,22 Z" fill="#10B981" opacity=".12" stroke="#10B981" stroke-width="1"/><path d="M52,32 L56,30 L56,26 Q54,24 52,26 Z" fill="#10B981" opacity=".15"/></svg></div></div>
+      <!-- 3 --><div class="wb-card"><div class="wb-card-btn cb-dgreen">03</div><div class="wb-card-label">考核得分查询</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="2" y="6" width="38" height="30" rx="4" fill="#059669" opacity=".05" stroke="#059669" stroke-width="1"/><line x1="10" y1="16" x2="34" y2="16" stroke="#059669" stroke-width="1.5"/><line x1="10" y1="23" x2="28" y2="23" stroke="#059669" stroke-width="2"/><circle cx="10" cy="30" r="3" fill="#059669"/><circle cx="21" cy="30" r="3" fill="#059669" opacity=".5"/><circle cx="32" cy="30" r="3" fill="#059669" opacity=".25"/></svg></div></div>
+      <!-- 4 --><div class="wb-card"><div class="wb-card-btn cb-teal">04</div><div class="wb-card-label">我的填报</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="6" y="4" width="34" height="36" rx="5" fill="#14B8A6" opacity=".05" stroke="#14B8A6" stroke-width="1"/><line x1="14" y1="14" x2="34" y2="14" stroke="#14B8A6" stroke-width="2"/><line x1="14" y1="22" x2="30" y2="22" stroke="#14B8A6" stroke-width="1.5" opacity=".6"/><line x1="14" y1="30" x2="25" y2="30" stroke="#14B8A6" stroke-width="1" opacity=".3"/></svg></div></div>
+      <!-- 5 --><div class="wb-card"><div class="wb-card-btn cb-cyan">05</div><div class="wb-card-label">我的审批</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><circle cx="18" cy="12" r="8" fill="#06B6D4" opacity=".06" stroke="#06B6D4" stroke-width="1"/><circle cx="30" cy="20" r="8" fill="#06B6D4" opacity=".08" stroke="#06B6D4" stroke-width="1"/><circle cx="22" cy="30" r="8" fill="#06B6D4" opacity=".10" stroke="#06B6D4" stroke-width="1"/></svg></div></div>
+      <!-- 6 --><div class="wb-card"><div class="wb-card-btn cb-lgreen">06</div><div class="wb-card-label">季度共性评价</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="3" y="6" width="10" height="28" rx="3" fill="#22C55E" opacity=".06" stroke="#22C55E" stroke-width="1"/><rect x="16" y="4" width="10" height="30" rx="3" fill="#22C55E" opacity=".08" stroke="#22C55E" stroke-width="1"/><rect x="29" y="10" width="10" height="24" rx="3" fill="#22C55E" opacity=".10" stroke="#22C55E" stroke-width="1"/><rect x="42" y="14" width="10" height="20" rx="3" fill="#22C55E" opacity=".14"/></svg></div></div>
+      <!-- 7 --><div class="wb-card"><div class="wb-card-btn cb-dteal">07</div><div class="wb-card-label">待办事项提醒</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><path d="M20,8 h26 q6,0 6,6 L52,30 q0,6 -6,6 L20,36 q-6,0 -6,-6 L14,14 q0,-6 6,-6 Z" fill="#0D9488" opacity=".05" stroke="#0D9488" stroke-width="1"/><rect x="20" y="16" width="18" height="3" rx="1.5" fill="#0D9488" opacity=".5"/><rect x="20" y="23" width="12" height="3" rx="1.5" fill="#0D9488" opacity=".35"/><circle cx="40" cy="9" r="4" fill="#EF4444"/></svg></div></div>
+      <!-- 8 --><div class="wb-card"><div class="wb-card-btn cb-azure">08</div><div class="wb-card-label">权限角色管理</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><path d="M28,4 L46,14 L28,24 L10,14 Z" fill="#3B82F6" opacity=".06" stroke="#3B82F6" stroke-width="1"/><circle cx="28" cy="14" r="3.5" fill="#fff" stroke="#3B82F6" stroke-width="1.5"/></svg></div></div>
+      <!-- 9 --><div class="wb-card"><div class="wb-card-btn cb-vcyan">09</div><div class="wb-card-label">操作日志审计</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><circle cx="28" cy="18" r="15" fill="#0891B2" opacity=".04" stroke="#0891B2" stroke-width="1"/><path d="M28,12 L28,20 L36,26" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+
+    </div>
+  </div>
+
+  <!-- ===== MODULE 3: 聘用制书记员管理 (8 cards) ===== -->
+  <div class="wb-section">
+    <div class="wb-section-title">聘用制书记员管理</div>
+    <div class="wb-card-grid">
+
+      <!-- 1 --><div class="wb-card"><div class="wb-card-btn cb-blue">01</div><div class="wb-card-label">考勤管理</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="6" y="4" width="40" height="22" rx="5" fill="#4A90E2" opacity=".05" stroke="#4A90E2" stroke-width="1"/><rect x="18" y="30" width="18" height="8" rx="3" fill="#4A90E2" opacity=".08" stroke="#4A90E2" stroke-width="1" opacity=".6"/><line x1="26" y1="10" x2="26" y2="20" stroke="#4A90E2" stroke-width="1.5"/><line x1="20" y1="15" x2="32" y2="15" stroke="#4A90E2" stroke-width="1.5"/></svg></div></div>
+      <!-- 2 --><div class="wb-card"><div class="wb-card-btn cb-purple">02</div><div class="wb-card-label">得分查看</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="4" y="10" width="16" height="16" rx="3" fill="#8B5CF6" opacity=".06" stroke="#8B5CF6" stroke-width="1"/><rect x="24" y="6" width="28" height="20" rx="3" fill="#8B5CF6" opacity=".08" stroke="#8B5CF6" stroke-width="1"/><path d="M38,30 L44,26 L52,32" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <!-- 3 --><div class="wb-card"><div class="wb-card-btn cb-indigo">03</div><div class="wb-card-label">假勤申请</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="6" y="4" width="30" height="34" rx="6" fill="#6366F1" opacity=".05" stroke="#6366F1" stroke-width="1"/><line x1="14" y1="16" x2="28" y2="16" stroke="#6366F1" stroke-width="1.5"/><line x1="14" y1="24" x2="23" y2="24" stroke="#6366F1" stroke-width="1" opacity=".6"/><circle cx="44" cy="30" r="9" fill="#6366F1" opacity=".08"/></svg></div></div>
+      <!-- 4 --><div class="wb-card"><div class="wb-card-btn cb-sky">04</div><div class="wb-card-label">点评总结</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><polygon points="28,6 42,18 28,30 14,18" fill="#0EA5E9" opacity=".06" stroke="#0EA5E9" stroke-width="1"/><line x1="10" y1="38" x2="48" y2="38" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" opacity=".35"/><line x1="16" y1="32" x2="42" y2="32" stroke="#0EA5E9" stroke-width="1" stroke-linecap="round" opacity=".2"/></svg></div></div>
+      <!-- 5 --><div class="wb-card"><div class="wb-card-btn cb-azure">05</div><div class="wb-card-label">季度综合评价</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><circle cx="15" cy="14" r="8" fill="#3B82F6" opacity=".06" stroke="#3B82F6" stroke-width="1"/><circle cx="33" cy="14" r="8" fill="#3B82F6" opacity=".08" stroke="#3B82F6" stroke-width="1"/><circle cx="24" cy="30" r="8" fill="#3B82F6" opacity=".10" stroke="#3B82F6" stroke-width="1"/></svg></div></div>
+      <!-- 6 --><div class="wb-card"><div class="wb-card-btn cb-dpurple">06</div><div class="wb-card-label">年度民主测评</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="4" y="8" width="14" height="18" rx="3" fill="#7C3AED" opacity=".06" stroke="#7C3AED" stroke-width="1"/><rect x="22" y="4" width="14" height="22" rx="3" fill="#7C3AED" opacity=".08" stroke="#7C3AED" stroke-width="1"/><rect x="40" y="10" width="14" height="16" rx="3" fill="#7C3AED" opacity=".10" stroke="#7C3AED" stroke-width="1"/><rect x="6" y="30" width="42" height="5" rx="2" fill="#7C3AED" opacity=".12"/></svg></div></div>
+      <!-- 7 --><div class="wb-card"><div class="wb-card-btn cb-deep">07</div><div class="wb-card-label">年度得分查看</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><path d="M6,32 L20,19 L30,25 L44,8" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="32" r="4" fill="#fff" stroke="#2563EB" stroke-width="2"/><circle cx="20" cy="19" r="4" fill="#fff" stroke="#2563EB" stroke-width="2"/><circle cx="30" cy="25" r="4" fill="#fff" stroke="#2563EB" stroke-width="2"/><circle cx="44" cy="8" r="4" fill="#2563EB"/></svg></div></div>
+      <!-- 8 --><div class="wb-card"><div class="wb-card-btn cb-lblue">08</div><div class="wb-card-label">个人总结</div><div class="wb-card-illus"><svg viewBox="0 0 58 46"><rect x="4" y="2" width="32" height="38" rx="5" fill="#5B9EE8" opacity=".05" stroke="#5B9EE8" stroke-width="1"/><rect x="40" y="12" width="14" height="4" rx="2" fill="#5B9EE8" opacity=".4"/><rect x="40" y="20" width="14" height="4" rx="2" fill="#5B9EE8" opacity=".3"/><rect x="40" y="28" width="9" height="4" rx="2" fill="#5B9EE8" opacity=".2"/></svg></div></div>
+
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- ================================================================
+     REPORT VIEW
+     ================================================================ -->
+<div id="report-view" class="view-container">
 <main class="main">
 
   <div class="filter-row">
@@ -832,6 +1322,7 @@ button { font-family: inherit; cursor: pointer; }
     <input class="filter-date" type="text" value="2026-06" placeholder="结束月份">
     <div class="filter-actions">
       <button class="filter-btn">查询</button>
+      <button class="back-btn" id="backToWorkbench">返回工作台</button>
     </div>
   </div>
 
@@ -1059,7 +1550,7 @@ button { font-family: inherit; cursor: pointer; }
   </div>
 
 </main>
-
+</div>
 
 <!-- ================================================================
      AI 深度解析 MODAL
@@ -1322,6 +1813,283 @@ button { font-family: inherit; cursor: pointer; }
   var colors = CHART_COLORS.slice(0, data.length);
 
   var legendEl = document.getElementById('chartLegend');
+  legendEl.innerHTML = '';
+  data.forEach(function(d, i) {
+    var pct = ((d.value / total) * 100).toFixed(1);
+    var item = document.createElement('div');
+    item.className = 'chart-legend-item';
+    item.innerHTML =
+      '<span class="chart-legend-dot" style="background:' + colors[i] + '"></span>' +
+      d.label +
+      '<span class="chart-legend-val">' + pct + '%</span>';
+    legendEl.appendChild(item);
+  });
+
+  var ctx = document.getElementById('donutChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: data.map(function(d) { return d.label; }),
+      datasets: [{
+        data: data.map(function(d) { return d.value; }),
+        backgroundColor: colors,
+        borderColor: '#fff',
+        borderWidth: 4,
+        hoverBorderWidth: 5,
+        hoverBorderColor: '#fff',
+        borderRadius: 3,
+        spacing: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '52%',
+      onHover: function(evt, els) {
+        evt.native.target.style.cursor = els.length ? 'pointer' : 'default';
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(26,31,43,0.94)',
+          titleColor: '#c1c7d0',
+          bodyColor: '#fff',
+          titleFont: { family: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif', size: 11.5, weight: '500' },
+          bodyFont:  { family: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif', size: 14, weight: '600' },
+          padding: 12, cornerRadius: 10,
+          displayColors: true, boxWidth: 10, boxHeight: 10, boxPadding: 4,
+          titleMarginBottom: 6, bodySpacing: 2,
+          callbacks: {
+            title: function(items) { return items[0].label; },
+            label: function(ctx) {
+              var pct = ((ctx.parsed / total) * 100).toFixed(1);
+              return ctx.parsed + ' 件  \u00b7  ' + pct + '%';
+            }
+          }
+        }
+      },
+      animation: {
+        animateScale: true, animateRotate: true,
+        duration: 900, easing: 'easeOutCubic'
+      }
+    }
+  });
+
+  // ==============================
+  // MODAL
+  // ==============================
+  var rawRows = [
+    { idx:1, name:'办理案件质量详查数',            score:'4790.21', weight:5,   anomaly:'用的什么算法', red:true  },
+    { idx:2, name:'社会治理检察建议采纳率',          score:'2958.02', weight:2,   anomaly:'',              red:true  },
+    { idx:3, name:'办结案件被评查确认为优质案件数',   score:'580',     weight:10,  anomaly:'',              red:false },
+    { idx:4, name:'办结案件被评查确认为有问题问题数', score:'-30',     weight:-10, anomaly:'',              red:false },
+    { idx:5, name:'参与案件质量评议数',             score:'186',     weight:1,   anomaly:'',              red:false },
+    { idx:6, name:'参与案件质量评议数',             score:'123',     weight:2,   anomaly:'',              red:false },
+    { idx:7, name:'内部法律监督线索成案数',          score:'-2',      weight:-2,  anomaly:'',              red:false },
+    { idx:8, name:'社会治理检察建议撤回或变更情况',   score:'-11',     weight:-1,  anomaly:'',              red:false }
+  ];
+
+  var tooltipHtml = '按案件难易类型设定单件基础分值，评查质量瑕疵、漏评问题予以扣分，专项、复查案件按对应权重折算计分。';
+
+  function renderModalRows(rows) {
+    var tbody = document.getElementById('modalTbody');
+    var h = '';
+    rows.forEach(function(r) {
+      var cls = r.red ? ' class="row-red"' : '';
+      var nameCell = r.name;
+      if (r.red) {
+        nameCell = '<span class="warn-trigger"><span class="warn-icon">!</span>' + r.name + '<span class="tooltip-pop">' + tooltipHtml + '</span></span>';
+      }
+      h += '<tr' + cls + '>';
+      h += '<td class="c">' + r.idx + '</td>';
+      h += '<td>' + nameCell + '</td>';
+      h += '<td class="c">' + r.score + '</td>';
+      h += '<td class="c">' + r.weight + '</td>';
+      h += '<td>' + (r.anomaly || '') + '</td>';
+      h += '</tr>';
+    });
+    tbody.innerHTML = h;
+  }
+  renderModalRows(rawRows);
+
+  function openModal(lineName) {
+    document.getElementById('modalTitle').textContent = (lineName || '通用类') + '考评指标得分';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  window.closeModal = function() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  };
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  var triggers = document.querySelectorAll('.detail-trigger');
+  triggers.forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      openModal(this.getAttribute('data-line') || '通用类');
+    });
+  });
+
+  var sortBtns = document.querySelectorAll('#sortSeg .mf-seg-btn');
+  sortBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      sortBtns.forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      var dir = this.getAttribute('data-sort');
+      var sorted = rawRows.slice().sort(function(a, b) {
+        var va = parseFloat(a.score), vb = parseFloat(b.score);
+        return dir === 'asc' ? va - vb : vb - va;
+      });
+      sorted.forEach(function(r, i) { r.idx = i + 1; });
+      renderModalRows(sorted);
+    });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+  // ==============================
+  // AI 深度解析 MODAL
+  // ==============================
+  window.closeAiModal = function() {
+    document.getElementById('aiModalOverlay').classList.remove('open');
+  };
+  document.getElementById('aiModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAiModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('aiModalOverlay').classList.contains('open')) {
+      closeAiModal();
+    }
+  });
+
+  var aiBtn = document.querySelector('.ai-btn');
+  if (aiBtn) {
+    aiBtn.addEventListener('click', function() {
+      document.getElementById('aiModalOverlay').classList.add('open');
+    });
+  }
+
+})();
+</script>
+
+<script>
+(function() {
+  // ==============================
+  // VIEW NAVIGATION
+  // ==============================
+  var header = document.getElementById('sharedHeader');
+  var sidebar = document.getElementById('sharedSidebar');
+  var bcCurrent = document.getElementById('breadcrumbCurrent');
+
+  function updateBreadcrumb(viewId) {
+    if (viewId === 'workbench-view') {
+      bcCurrent.innerHTML = '工作台';
+    } else if (viewId === 'report-view') {
+      bcCurrent.innerHTML = '指标管理 / 履职情况分析 / <span class="current">本院履职情况</span>';
+    }
+  }
+
+  window.showView = function(viewId) {
+    document.querySelectorAll('.view-container').forEach(function(v) {
+      v.classList.remove('view-active');
+    });
+    var view = document.getElementById(viewId);
+    if (view) view.classList.add('view-active');
+
+    if (viewId === 'login-view') {
+      header.style.display = 'none';
+      sidebar.style.display = 'none';
+      document.body.classList.remove('wb-mode');
+    } else if (viewId === 'workbench-view') {
+      header.style.display = 'none';
+      sidebar.style.display = 'none';
+      document.body.classList.add('wb-mode');
+    } else {
+      header.style.display = 'flex';
+      sidebar.style.display = 'block';
+      document.body.classList.remove('wb-mode');
+      updateBreadcrumb(viewId);
+    }
+  };
+
+  // Breadcrumb "back" - clicking the breadcrumb parent navigates up
+  var bcBack = document.getElementById('breadcrumbBack');
+  if (bcBack) {
+    bcBack.style.cursor = 'pointer';
+    bcBack.addEventListener('click', function() {
+      var txt = bcCurrent.textContent || '';
+      if (txt.indexOf('本院履职情况') !== -1) {
+        window.showView('workbench-view');
+      }
+    });
+  }
+
+  // Login button
+  var loginBtn = document.querySelector('#login-view .btn-login');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.showView('workbench-view');
+    });
+  }
+
+  // Workbench cards: all navigate to report view
+  var wbCards = document.querySelectorAll('#workbench-view .wb-card');
+  wbCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      window.showView('report-view');
+    });
+  });
+
+  // Report-view "返回工作台" button
+
+  var backBtn = document.getElementById('backToWorkbench');
+  if (backBtn) {
+    backBtn.addEventListener('click', function() {
+      window.showView('workbench-view');
+    });
+  }
+})();
+
+(function() {
+  // ==============================
+  // RICH MULTI-COLOR CHART PALETTE
+  // ==============================
+  var CHART_COLORS = [
+    '#4A90E2', /* 蓝 — 刑事检察 */
+    '#9B59B6', /* 紫 — 检察技术 */
+    '#2ECC71', /* 绿 — 公益诉讼 */
+    '#F1C40F', /* 黄 — 案件管理 */
+    '#F39C12', /* 橙 — 公共业务 */
+    '#E74C3C', /* 红 — 民事检察 */
+    '#1ABC9C', /* 青绿 — 执检 */
+    '#34495E', /* 深蓝 — 控申 */
+    '#E91E63', /* 粉红 — 检委办 */
+    '#00BCD4', /* 浅蓝 — 行政检察 */
+    '#8E44AD'  /* 深紫 — 法律政策 */
+  ];
+
+  var data = [
+    { label: '公共业务', value: 230 },
+    { label: '案管',      value: 201 },
+    { label: '检委办',    value: 197 },
+    { label: '行政检察',  value: 179 },
+    { label: '民事检察',  value: 166 },
+    { label: '控申',      value: 159 },
+    { label: '执检',      value: 126 },
+    { label: '公益诉讼',  value: 116 },
+    { label: '检察技术',  value: 116 },
+    { label: '刑事检察',  value: 98  },
+    { label: '法律政策',  value: 62  }
+  ];
+
+  var total = data.reduce(function(s, d) { return s + d.value; }, 0);
+  var colors = CHART_COLORS.slice(0, data.length);
+
+  var legendEl = document.getElementById('chartLegend');
+  legendEl.innerHTML = '';
   data.forEach(function(d, i) {
     var pct = ((d.value / total) * 100).toFixed(1);
     var item = document.createElement('div');

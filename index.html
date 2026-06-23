@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>检察机关绩效管理平台</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
+</script>
+<style>
+/* ============================================================
+   DESIGN SYSTEM — Inspired by Linear / Vercel / Stripe
+   ============================================================ */
+:root {
+  /* Neutrals — warm slate undertone */
+  --gray-0: #fafbfc;
+  --gray-1: #f4f5f7;
+  --gray-2: #ebecf0;
+  --gray-3: #dfe1e6;
+  --gray-4: #c1c7d0;
+  --gray-5: #97a0af;
+  --gray-6: #6b7785;
+  --gray-7: #42526e;
+  --gray-8: #253858;
+  --gray-9: #172b4d;
+  --gray-10: #091e42;
+  
+  /* Accent — refined indigo-blue */
+  --accent: #5b6abf;
+  --accent-hover: #4a56a8;
+  --accent-soft: #eef0fb;
+  --accent-ring: rgba(91,106,191,.18);
+  
+  /* Semantic */
+  --red: #e5484d;
+  --red-soft: #fef2f2;
+  --amber: #d2850b;
+  --amber-soft: #fffbeb;
+  --green: #30a46c;
+  --green-soft: #f1faf6;
+  
+  /* Surfaces */
+  --surface: #fff;
+  --surface-raised: #fff;
+  --bg: #f8f9fb;
+  
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  
+  /* Shadows */
+  --shadow-card: 0 0 0 1px rgba(9,30,66,.04), 0 1px 1px rgba(9,30,66,.06);
+  --shadow-card-hover: 0 0 0 1px rgba(9,30,66,.06), 0 2px 8px rgba(9,30,66,.08);
+  --shadow-pop: 0 0 0 1px rgba(9,30,66,.06), 0 8px 24px rgba(9,30,66,.12);
+  
+  /* Layout */
+  --sidebar-w: 220px;
+  --header-h: 48px;
+  
+  /* Typography */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--gray-8);
+  min-width: 1440px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv02","cv03","cv04","cv09";
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  height: var(--header-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--gray-2);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--gray-9);
+  letter-spacing: -0.2px;
+  width: var(--sidebar-w);
+  padding-left: 4px;
+}
+.header-brand .brand-mark {
+  width: 22px; height: 22px;
+  background: var(--accent);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 11px; font-weight: 700;
+}
+.header-breadcrumb {
+  margin-left: 8px;
+  font-size: 12.5px;
+  color: var(--gray-5);
+  display: flex; align-items: center; gap: 5px;
+}
+.header-breadcrumb .current { color: var(--gray-7); font-weight: 500; }
+
+.header-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 14px;
+}
+.header-search {
+  display: flex; align-items: center;
+  width: 200px; height: 30px;
+  border: 1px solid var(--gray-3);
+  border-radius: 6px;
+  padding: 0 10px;
+  background: var(--gray-0);
+  gap: 7px;
+  transition: all .15s;
+}
+.header-search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+  background: #fff;
+}
+.header-search svg { width: 14px; height: 14px; color: var(--gray-5); flex-shrink: 0; }
+.header-search input {
+  border: none; background: transparent; outline: none;
+  font-size: 12.5px; color: var(--gray-8); width: 100%; font-family: inherit;
+}
+.header-search input::placeholder { color: var(--gray-5); }
+
+.header-btn {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  transition: background .12s;
+  color: var(--gray-6);
+}
+.header-btn:hover { background: var(--gray-1); }
+.header-btn .dot {
+  position: absolute;
+  top: 5px; right: 6px;
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+}
+.header-user {
+  display: flex; align-items: center; gap: 7px;
+  padding: 2px 6px 2px 2px;
+  border-radius: 6px;
+  transition: background .12s;
+  cursor: pointer;
+}
+.header-user:hover { background: var(--gray-1); }
+.header-user .avatar {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #7c8bd6, #5b6abf);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+}
+.header-user .user-info { line-height: 1.2; }
+.header-user .user-name { font-size: 12px; color: var(--gray-8); font-weight: 500; }
+.header-user .user-role { font-size: 10.5px; color: var(--gray-5); }
+.header-user .chevron { color: var(--gray-5); font-size: 9px; margin-left: 1px; }
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+  position: fixed;
+  top: var(--header-h); left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--gray-2);
+  overflow-y: auto;
+  z-index: 199;
+  padding: 12px 10px 20px;
+}
+.sidebar-menu li { margin-bottom: 0; }
+.sidebar-menu li a {
+  display: flex; align-items: center;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--gray-6);
+  transition: all .12s;
+  gap: 8px;
+  font-weight: 450;
+  letter-spacing: -0.1px;
+}
+.sidebar-menu li a:hover { background: var(--gray-1); color: var(--gray-8); }
+.sidebar-menu li.section-label {
+  padding: 16px 10px 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--gray-5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.sidebar-menu li.section > a {
+  font-weight: 550;
+  color: var(--gray-7);
+  font-size: 13px;
+}
+.sidebar-menu li.active > a {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.sidebar-menu ul.sub { padding-left: 6px; margin-top: 2px; }
+.sidebar-menu ul.sub li a {
+  padding-left: 24px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.sidebar-menu ul.sub li a::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--gray-4);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity .12s;
+}
+.sidebar-menu ul.sub li a:hover::before,
+.sidebar-menu ul.sub li.sub-active a::before { opacity: 1; }
+.sidebar-menu ul.sub li.sub-active a {
+  color: var(--accent);
+  font-weight: 550;
+  background: var(--accent-soft);
+}
+.sidebar-menu ul.sub li.sub-active a::before { background: var(--accent); }
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--gray-2);
+  margin: 6px 10px;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 24px 28px 40px;
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* Page Title */
+.page-header {
+  margin-bottom: 20px;
+}
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gray-9);
+  letter-spacing: -0.3px;
+}
+.page-subtitle {
+  font-size: 12.5px;
+  color: var(--gray-5);
+  margin-top: 3px;
+}
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 10px 16px;
+  box-shadow: var(--shadow-card);
+}
+.filter-row .filter-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-6);
+  white-space: nowrap;
+}
+.filter-select {
+  height: 32px;
+  border: 1px solid var(--gray-3);
+  border-radius: 6px;
+  padding: 0 28px 0 10px;
+  font-size: 12.5px;
+  color: var(--gray-7);
+  background: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2397a0af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: border-color .15s, box-shadow .15s;
+  width: 170px;
+}
+.filter-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+.filter-date {
+  width: 120px; height: 32px;
+  border: 1px solid var(--gray-3);
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 12.5px;
+  color: var(--gray-7);
+  font-family: inherit;
+  transition: border-color .15s, box-shadow .15s;
+}
+.filter-date:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+.filter-sep { color: var(--gray-5); font-size: 13px; }
+.filter-actions { margin-left: auto; }
+.filter-btn {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: background .15s;
+}
+.filter-btn:hover { background: var(--accent-hover); }
+
+/* ============================================================
+   KPI HERO CARDS
+   ============================================================ */
+.kpi-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.kpi-hero-card {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow .2s;
+  display: flex; align-items: center; gap: 18px;
+  cursor: default;
+}
+.kpi-hero-card:hover { box-shadow: var(--shadow-card-hover); }
+.kpi-hero-card .kpi-icon {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.kpi-hero-card .kpi-icon.accent { background: var(--accent-soft); color: var(--accent); }
+.kpi-hero-card .kpi-icon.green { background: var(--green-soft); color: var(--green); }
+.kpi-hero-card .kpi-icon svg { width: 26px; height: 26px; }
+.kpi-hero-card .kpi-body { line-height: 1.25; }
+.kpi-hero-card .kpi-label {
+  font-size: 12px; font-weight: 500; color: var(--gray-5);
+  letter-spacing: 0.2px; margin-bottom: 3px;
+  text-transform: uppercase;
+}
+.kpi-hero-card .kpi-value {
+  font-size: 36px; font-weight: 700; color: var(--gray-9);
+  letter-spacing: -1px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font);
+}
+.kpi-hero-card .kpi-value .unit {
+  font-size: 15px; font-weight: 450; color: var(--gray-5);
+  margin-left: 4px; letter-spacing: 0;
+}
+.kpi-hero-card .kpi-change {
+  font-size: 11.5px; color: var(--green); font-weight: 500; margin-top: 2px;
+}
+.kpi-hero-card .kpi-change.down { color: var(--red); }
+
+/* ============================================================
+   CONTENT GRID
+   ============================================================ */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.content-col {
+  display: flex; flex-direction: column; gap: 16px;
+  height: 100%;
+}
+.content-col > :last-child { margin-top: auto; }
+
+/* ============================================================
+   CARD COMPONENT
+   ============================================================ */
+.card {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.card:hover { box-shadow: var(--shadow-card-hover); }
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--gray-2);
+}
+.card-head-title {
+  font-size: 13.5px; font-weight: 600; color: var(--gray-8);
+  letter-spacing: -0.1px;
+  font-variant-numeric: tabular-nums;
+}
+.card-head-action {
+  font-size: 12px; color: var(--accent); font-weight: 500;
+  transition: color .12s;
+}
+.card-head-action:hover { color: var(--accent-hover); }
+.card-body { padding: 16px 20px; }
+.card-body-flush { padding: 0; }
+
+/* ============================================================
+   PILL TABS
+   ============================================================ */
+.pill-group {
+  display: inline-flex;
+  background: var(--gray-1);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 14px;
+}
+.pill {
+  padding: 5px 13px;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--gray-6);
+  font-weight: 450;
+  transition: all .12s;
+  white-space: nowrap;
+}
+.pill:hover { color: var(--gray-7); }
+.pill.active {
+  background: #fff;
+  color: var(--gray-8);
+  font-weight: 550;
+  box-shadow: 0 1px 2px rgba(9,30,66,.06);
+}
+
+/* ============================================================
+   INFO LIST
+   ============================================================ */
+.info-list {}
+.info-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--gray-1);
+  font-size: 13px;
+  transition: background .1s;
+}
+.info-item:last-child { border-bottom: none; }
+.info-item .info-key {
+  color: var(--gray-5); font-size: 12px; white-space: nowrap; min-width: 0;
+}
+.info-item .info-val { color: var(--gray-8); flex: 1; }
+.info-item .info-chevron {
+  color: var(--gray-4);
+  width: 22px; height: 22px;
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  transition: all .12s;
+  flex-shrink: 0;
+}
+.info-item:hover .info-chevron {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ============================================================
+   CHART BOX
+   ============================================================ */
+.chart-section {
+  display: flex; align-items: flex-start; gap: 28px;
+}
+.chart-donut-wrap {
+  width: 180px; height: 180px;
+  flex-shrink: 0;
+  position: relative;
+}
+.chart-donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.chart-donut-center .chart-big {
+  font-size: 26px; font-weight: 700; color: var(--gray-9);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5px;
+}
+.chart-donut-center .chart-small {
+  font-size: 10.5px; color: var(--gray-5); font-weight: 500;
+}
+.chart-legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 14px;
+  font-size: 11px;
+  padding-top: 5px;
+}
+.chart-legend-item {
+  display: flex; align-items: center; gap: 5px;
+  color: var(--gray-6);
+  padding: 1px 0;
+}
+.chart-legend-dot {
+  width: 6px; height: 6px;
+  border-radius: 2px; flex-shrink: 0;
+}
+
+/* ============================================================
+   DATA TABLE
+   ============================================================ */
+.table-wrap { overflow-x: auto; }
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.data-table thead th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--gray-5);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 9px 16px;
+  border-bottom: 2px solid var(--gray-2);
+  white-space: nowrap;
+  background: var(--gray-0);
+}
+.data-table thead th:first-child { border-radius: var(--r-lg) 0 0 0; }
+.data-table thead th:last-child { border-radius: 0 var(--r-lg) 0 0; }
+.data-table thead th.center { text-align: center; }
+.data-table tbody td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--gray-1);
+  color: var(--gray-7);
+  font-variant-numeric: tabular-nums;
+}
+.data-table tbody td.center { text-align: center; }
+.data-table tbody tr { transition: background .1s; }
+.data-table tbody tr:hover { background: var(--gray-0); }
+.data-table .cell-link {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+}
+.data-table .cell-link:hover { text-decoration: underline; }
+
+/* Alert row */
+.data-table tr.alert-row { background: var(--red-soft); }
+.data-table tr.alert-row:hover { background: #fef0ef; }
+.data-table tr.alert-row .alert-badge {
+  display: inline-block;
+  font-size: 9.5px;
+  color: #fff;
+  background: var(--red);
+  padding: 1.5px 6px;
+  border-radius: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+.data-table tr.alert-row .alert-pct { color: var(--red); font-weight: 600; }
+
+/* ============================================================
+   AI BUTTON
+   ============================================================ */
+.ai-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--gray-9);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: all .15s;
+  letter-spacing: 0.1px;
+}
+.ai-btn:hover {
+  background: #000;
+  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+}
+.ai-btn .ai-dot {
+  width: 6px; height: 6px;
+  background: #5eead4;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(94,234,212,.6);
+}
+
+/* ============================================================
+   META INFO
+   ============================================================ */
+.meta-strip {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 10px;
+  font-size: 12px; color: var(--gray-5);
+}
+.meta-strip strong { color: var(--gray-7); font-weight: 600; }
+.alert-strip {
+  font-size: 11px;
+  color: var(--red);
+  background: var(--red-soft);
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  border-left: 2.5px solid var(--red);
+}
+
+/* ============================================================
+   BOTTOM SECTION
+   ============================================================ */
+.mini-select-row {
+  display: flex; gap: 10px; margin-bottom: 14px;
+}
+.mini-select {
+  height: 30px;
+  border: 1px solid var(--gray-3);
+  border-radius: 6px;
+  padding: 0 28px 0 10px;
+  font-size: 12px; color: var(--gray-7);
+  font-family: inherit;
+  background: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 170px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2397a0af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: border-color .15s, box-shadow .15s;
+}
+.mini-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-4); }
+
+/* Badge counter */
+.badge-sm {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 16px; height: 16px;
+  border-radius: 8px;
+  background: var(--gray-2);
+  color: var(--gray-6);
+  font-size: 10px; font-weight: 600;
+  padding: 0 5px;
+  font-variant-numeric: tabular-nums;
+}
+.badge-sm.red { background: var(--red-soft); color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="header">
+  <div class="header-brand">
+    <div class="brand-mark">检</div>
+    检察机关绩效管理平台
+  </div>
+  <nav class="header-breadcrumb">
+    指标管理 / 履职情况分析 / <span class="current">本院履职情况</span>
+  </nav>
+  <div class="header-right">
+    <label class="header-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="搜索...">
+    </label>
+    <button class="header-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <span class="dot"></span>
+    </button>
+    <div class="header-user">
+      <div class="avatar">张</div>
+      <div class="user-info">
+        <div class="user-name">张三</div>
+        <div class="user-role">检查员</div>
+      </div>
+      <span class="chevron">▾</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+<aside class="sidebar">
+  <ul class="sidebar-menu">
+    <li><a href="#">首页</a></li>
+    <li class="section-label">指标管理</li>
+    <li><a href="#">指标清单</a></li>
+    <li><a href="#">考核方案管理</a></li>
+    <li><a href="#">人员调整管理</a></li>
+    <li><a href="#">考核活动管理</a></li>
+    <li><a href="#">申报管理</a></li>
+    <li><a href="#">基础分评价</a></li>
+    <li class="sidebar-divider"></li>
+    <li><a href="#">得分查询</a></li>
+    <li><a href="#">系统管理</a></li>
+    <li><a href="#">领导得分管理</a></li>
+    <li><a href="#">异议管理</a></li>
+    <li class="sidebar-divider"></li>
+    <li class="section active"><a href="#">履职情况分析</a></li>
+    <ul class="sub">
+      <li class="sub-active"><a href="#">本院履职情况</a></li>
+    </ul>
+  </ul>
+</aside>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<main class="main">
+
+  <!-- Filter Bar -->
+  <div class="filter-row">
+    <span class="filter-label">单位</span>
+    <select class="filter-select"><option>请选择单位名称</option></select>
+    <span class="filter-label">统计区间</span>
+    <input class="filter-date" type="text" value="2026-01" placeholder="开始月份">
+    <span class="filter-sep">—</span>
+    <input class="filter-date" type="text" value="2026-06" placeholder="结束月份">
+    <div class="filter-actions">
+      <button class="filter-btn">查询</button>
+    </div>
+  </div>
+
+  <!-- Two Column Grid -->
+  <div class="content-grid">
+
+    <!-- ===== LEFT ===== -->
+    <div class="content-col">
+
+      <!-- KPI Hero -->
+      <div class="kpi-hero">
+        <div class="kpi-hero-card">
+          <div class="kpi-icon accent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-label">案源类</div>
+            <div class="kpi-value">304<span class="unit">件</span></div>
+            <div class="kpi-change">较上期 +12%</div>
+          </div>
+        </div>
+        <div class="kpi-hero-card">
+          <div class="kpi-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-label">结案量</div>
+            <div class="kpi-value">49<span class="unit">件</span></div>
+            <div class="kpi-change down">较上期 -3%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 案件质量评查台账 -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">案件质量评查台账</span>
+          <span class="card-head-action">查看全部 →</span>
+        </div>
+        <div class="card-body">
+          <div class="pill-group">
+            <div class="pill active">优质案件 <span class="badge-sm" style="margin-left:3px;">1</span></div>
+            <div class="pill">合格案件</div>
+            <div class="pill">基本合格</div>
+            <div class="pill">不合格</div>
+          </div>
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-key">部门受案号</span>
+              <span class="info-val" style="font-family:var(--font-mono);font-size:12px;">123****1223</span>
+              <span class="info-chevron">›</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">申报内容</span>
+              <span class="info-val"></span>
+              <span class="info-chevron">›</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">评审类型</span>
+              <span class="info-val"></span>
+              <span class="info-chevron">›</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">评定结果分类</span>
+              <span class="info-val"></span>
+              <span class="info-chevron">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 典型先进 -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">典型先进</span>
+          <span class="card-head-action">查看全部 →</span>
+        </div>
+        <div class="card-body">
+          <div class="pill-group">
+            <div class="pill active">指导性案例发布 <span class="badge-sm" style="margin-left:3px;">1</span></div>
+            <div class="pill">表彰奖励</div>
+            <div class="pill">先进工作经验</div>
+          </div>
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-key">申报对象</span>
+              <span class="info-val"></span>
+              <span class="info-chevron">›</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">申报内容</span>
+              <span class="info-val"></span>
+              <span class="info-chevron">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 被追究司法责任 -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">被追究司法责任</span>
+          <span class="badge-sm red" style="margin-left:auto;margin-right:0;">0</span>
+        </div>
+        <div class="card-body">
+          <div class="pill-group">
+            <div class="pill active">指导性案例发布 <span class="badge-sm" style="margin-left:3px;">1</span></div>
+            <div class="pill">表彰奖励</div>
+            <div class="pill">先进工作经验</div>
+          </div>
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-key">被申报对象</span>
+              <span class="info-val"></span>
+              <span class="info-chevron">›</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">申报内容</span>
+              <span class="info-val"></span>
+              <span class="info-chevron">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== RIGHT ===== -->
+    <div class="content-col">
+
+      <!-- 案件类型分布 -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">案件类型分布</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-section">
+            <div class="chart-donut-wrap">
+              <canvas id="donutChart"></canvas>
+              <div class="chart-donut-center">
+                <div class="chart-big">11</div>
+                <div class="chart-small">案件类别</div>
+              </div>
+            </div>
+            <div class="chart-legend-grid" id="chartLegend"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 各条线业绩指标占比分布 -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-head-title">各条线业绩指标占比分布</span>
+          <button class="ai-btn">
+            <span class="ai-dot"></span>AI 深度解析
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="meta-strip">
+            <span>2026.01 — 2026.03</span>
+            <span>总分 <strong>1,000.01</strong></span>
+          </div>
+          <div class="alert-strip">
+            单一业务案件占比超过 30% 时标红预警。刑事检察、民事检察、行政检察、公益诉讼等条线均适用此规则。
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>业务条线</th>
+                  <th class="center">条线得分</th>
+                  <th class="center">总分</th>
+                  <th class="center">占比</th>
+                  <th class="center">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>通用类</td>
+                  <td class="center">100.00</td>
+                  <td class="center">1,000</td>
+                  <td class="center">10.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>刑事检察</td>
+                  <td class="center">50.00</td>
+                  <td class="center">1,000</td>
+                  <td class="center">5.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>民事检察</td>
+                  <td class="center">100.00</td>
+                  <td class="center">1,000</td>
+                  <td class="center">9.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>公益诉讼检察</td>
+                  <td class="center">50.00</td>
+                  <td class="center">1,000</td>
+                  <td class="center">5.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr class="alert-row">
+                  <td><span class="alert-badge">异常</span>未成年人检察</td>
+                  <td class="center">50.00</td>
+                  <td class="center">1,000</td>
+                  <td class="center alert-pct">8.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>控告申诉</td>
+                  <td class="center">68.00</td>
+                  <td class="center">1,000</td>
+                  <td class="center">6.8%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>案件管理</td>
+                  <td class="center">—</td>
+                  <td class="center">1,000</td>
+                  <td class="center">5.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>检察综合</td>
+                  <td class="center">—</td>
+                  <td class="center">1,000</td>
+                  <td class="center">5.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>法律政策研究</td>
+                  <td class="center">10.00</td>
+                  <td class="center">1,000</td>
+                  <td class="center">1.0%</td>
+                  <td class="center"><span class="cell-link">详情</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Bottom: 指标得分详情 ===== -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-title">指标得分详情</span>
+    </div>
+    <div class="card-body">
+      <div class="mini-select-row">
+        <select class="mini-select"><option>全部业务条线</option></select>
+        <select class="mini-select"><option>全部业务类型</option></select>
+      </div>
+      <div class="pill-group">
+        <div class="pill active">全部 <span class="badge-sm" style="margin-left:3px;">3</span></div>
+        <div class="pill">扣分指标</div>
+        <div class="pill">直空指标</div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>案件类型</th>
+              <th>指标名称</th>
+              <th class="center">取值方式</th>
+              <th class="center">总分值</th>
+              <th class="center">数量</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>刑事检察</td>
+              <td>审查逮捕案件质量指标</td>
+              <td class="center">自动取值</td>
+              <td class="center">50.00</td>
+              <td class="center">12</td>
+            </tr>
+            <tr>
+              <td>刑事检察</td>
+              <td>审查起诉案件质量指标</td>
+              <td class="center">自动取值</td>
+              <td class="center">50.00</td>
+              <td class="center">8</td>
+            </tr>
+            <tr>
+              <td>民事检察</td>
+              <td>民事诉讼监督案件质量</td>
+              <td class="center">手动录入</td>
+              <td class="center">40.00</td>
+              <td class="center">5</td>
+            </tr>
+            <tr>
+              <td>行政检察</td>
+              <td>行政诉讼监督案件质量</td>
+              <td class="center">自动取值</td>
+              <td class="center">40.00</td>
+              <td class="center">3</td>
+            </tr>
+            <tr>
+              <td>公益诉讼</td>
+              <td>公益诉讼案件质量指标</td>
+              <td class="center">手动录入</td>
+              <td class="center">30.00</td>
+              <td class="center">7</td>
+            </tr>
+            <tr>
+              <td>控告申诉</td>
+              <td>控告申诉案件办理质量</td>
+              <td class="center">自动取值</td>
+              <td class="center">25.00</td>
+              <td class="center">6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ============================================================
+     CHART.JS
+     ============================================================ -->
+<script>
+(function() {
+  // Sophisticated color palette — muted, professional, WCAG-friendly
+  var CHART_COLORS = [
+    '#7c8bd6', '#6aa1d8', '#5eb3b3', '#78c9a6', '#a8c97a',
+    '#d4b85c', '#e8945c', '#e0737a', '#c472b8', '#9a7cc4',
+    '#7c9bb5'
+  ];
+
+  var data = [
+    { label: '公共业务', value: 230 },
+    { label: '案管',      value: 201 },
+    { label: '检委办',    value: 197 },
+    { label: '行政检察',  value: 179 },
+    { label: '民事检察',  value: 166 },
+    { label: '控申',      value: 159 },
+    { label: '执检',      value: 126 },
+    { label: '公益诉讼',  value: 116 },
+    { label: '检察技术',  value: 116 },
+    { label: '刑事检察',  value: 98  },
+    { label: '法律政策',  value: 62  }
+  ];
+
+  var colors = data.map(function(_, i) { return CHART_COLORS[i % CHART_COLORS.length]; });
+
+  // Build legend
+  var legendEl = document.getElementById('chartLegend');
+  data.forEach(function(d, i) {
+    var item = document.createElement('div');
+    item.className = 'chart-legend-item';
+    item.innerHTML = '<span class="chart-legend-dot" style="background:' + colors[i] + '"></span>' + d.label;
+    legendEl.appendChild(item);
+  });
+
+  // Chart
+  var ctx = document.getElementById('donutChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: data.map(function(d) { return d.label; }),
+      datasets: [{
+        data: data.map(function(d) { return d.value; }),
+        backgroundColor: colors,
+        borderColor: '#fff',
+        borderWidth: 2,
+        hoverBorderWidth: 2.5,
+        hoverBorderColor: '#fff',
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '65%',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#172b4d',
+          titleFont: { family: '-apple-system, sans-serif', size: 11, weight: '500' },
+          bodyFont: { family: '-apple-system, sans-serif', size: 13, weight: '500' },
+          padding: 10,
+          cornerRadius: 8,
+          displayColors: true,
+          boxPadding: 3,
+          callbacks: {
+            label: function(ctx) {
+              return '  ' + ctx.parsed + ' 件';
+            }
+          }
+        }
+      },
+      animation: {
+        animateScale: true,
+        animateRotate: true,
+        duration: 900,
+        easing: 'easeOutCubic'
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

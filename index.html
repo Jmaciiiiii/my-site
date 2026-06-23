@@ -51,7 +51,7 @@
   --shadow-card: 0 0 0 1px rgba(0,0,0,.03), 0 1px 3px rgba(0,0,0,.06);
   --shadow-card-hover: 0 0 0 1px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.09);
   --shadow-pop: 0 0 0 1px rgba(0,0,0,.05), 0 12px 32px rgba(0,0,0,.14);
-  --sidebar-w: 220px;
+  --sidebar-w: 240px;
   --header-h: 48px;
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-mono: "SF Mono", "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
@@ -155,50 +155,100 @@ button { font-family: inherit; cursor: pointer; }
 .header-user .chevron { color: var(--gray-5); font-size: 9px; margin-left: 1px; }
 
 /* ================================================================
-   SIDEBAR
+   SIDEBAR  (Stripe/Linear grade)
    ================================================================ */
 .sidebar {
   position: fixed; top: var(--header-h); left: 0; bottom: 0;
   width: var(--sidebar-w);
-  background: linear-gradient(180deg, #f5f7fa 0%, #edf2f8 100%);
+  background: #fff;
   border-right: 1px solid var(--gray-2);
   overflow-y: auto; z-index: 199;
+}
+/* ================================================================
+   SIDEBAR MENU
+   ================================================================ */
+.sidebar-menu {
   padding: 14px 10px 20px;
+  margin: 0;
 }
-.sidebar-menu li { margin-bottom: 0; }
-.sidebar-menu li a {
-  display: flex; align-items: center;
-  padding: 7px 10px; border-radius: 6px;
-  font-size: 12.5px; color: var(--gray-7);
-  transition: all .15s; gap: 8px; font-weight: 450;
-  letter-spacing: -0.1px;
+.sidebar-menu li {
+  list-style: none;
+  margin: 2px 0;
 }
-.sidebar-menu li a:hover { background: rgba(74,144,226,0.06); color: var(--primary); }
-.sidebar-menu li.section-label {
-  padding: 16px 10px 4px;
-  font-size: 10.5px; font-weight: 650; color: var(--gray-5);
-  text-transform: uppercase; letter-spacing: 0.5px;
+.sidebar-menu li > a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 13px; font-weight: 450; color: var(--gray-7);
+  transition: all .12s; text-decoration: none; position: relative;
 }
-.sidebar-menu li.section > a { font-weight: 550; color: var(--gray-8); font-size: 13px; }
-.sidebar-menu li.active > a {
-  background: var(--primary-gradient);
-  color: #fff; font-weight: 600;
-  box-shadow: 0 2px 8px rgba(74,144,226,0.3);
+.sidebar-menu li > a:hover {
+  background: var(--gray-1); color: var(--gray-8);
 }
-.sidebar-menu ul.sub { padding-left: 6px; margin-top: 2px; }
-.sidebar-menu ul.sub li a { padding-left: 24px; font-size: 12px; font-weight: 400; }
-.sidebar-menu ul.sub li a::before {
-  content: ''; width: 4px; height: 4px; border-radius: 50%;
-  background: var(--primary); flex-shrink: 0;
-  opacity: 0; transition: opacity .12s;
+/* Icon in menu item */
+.s-icon {
+  width: 18px; height: 18px; flex-shrink: 0;
+  color: var(--gray-5); transition: color .12s;
 }
-.sidebar-menu ul.sub li a:hover::before,
-.sidebar-menu ul.sub li.sub-active a::before { opacity: 1; }
-.sidebar-menu ul.sub li.sub-active a {
-  color: var(--primary); font-weight: 600;
+.sidebar-menu li > a:hover .s-icon {
+  color: var(--gray-6);
+}
+
+/* Section label (group header) */
+.sidebar-menu .section-label {
+  display: block; padding: 18px 12px 6px;
+  font-size: 10.5px; font-weight: 700; color: var(--gray-4);
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
+
+/* Divider */
+.sidebar-menu .sidebar-divider {
+  height: 1px; background: var(--gray-2);
+  margin: 10px 12px;
+}
+
+/* Active menu item — 3px blue left line + light blue background */
+.sidebar-menu li.section.active > a {
   background: var(--primary-soft);
+  color: var(--primary); font-weight: 650;
 }
-.sidebar-divider { height: 1px; background: var(--gray-2); margin: 8px 10px; }
+.sidebar-menu li.section.active > a::before {
+  content: '';
+  position: absolute; left: 0; top: 4px; bottom: 4px;
+  width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--primary);
+}
+.sidebar-menu li.section.active .s-icon {
+  color: var(--primary);
+}
+
+/* Sub-menu */
+.sidebar-menu .sub {
+  padding: 2px 0 2px 0;
+  margin: 0;
+}
+.sidebar-menu .sub li {
+  margin: 1px 0;
+}
+.sidebar-menu .sub li a {
+  display: flex; align-items: center;
+  padding: 6px 12px;
+  font-size: 12.5px; font-weight: 450; color: var(--gray-6);
+  border-radius: 6px; text-decoration: none; transition: all .12s;
+}
+.sidebar-menu .sub li a:hover {
+  background: var(--gray-1); color: var(--gray-8);
+}
+.sidebar-menu .sub .sub-active a {
+  background: var(--primary-soft);
+  color: var(--primary); font-weight: 600;
+}
+.sidebar-menu .sub .sub-active a::before {
+  content: '';
+  display: inline-block; width: 4px; height: 4px;
+  border-radius: 50%; background: var(--primary);
+  margin-right: 8px; flex-shrink: 0;
+}
 
 /* ================================================================
    MAIN
@@ -583,6 +633,132 @@ button { font-family: inherit; cursor: pointer; }
   text-decoration: none !important;
 }
 
+
+/* ================================================================
+   AI 深度解析 MODAL
+   ================================================================ */
+.ai-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,31,43,.42);
+  z-index: 1001; display: none;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.ai-modal-overlay.open { display: flex; }
+.ai-modal-box {
+  background: #fdfdfd;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border-radius: var(--r-lg);
+  width: 900px; max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 24px 80px rgba(0,0,0,.18);
+  animation: modalIn .25s ease-out;
+}
+.ai-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px 14px;
+  border-bottom: 1px solid var(--gray-2);
+  background: var(--surface);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  position: sticky; top: 0; z-index: 5;
+}
+.ai-modal-title {
+  font-size: 16px; font-weight: 700; color: var(--gray-9);
+  letter-spacing: -0.2px;
+}
+.ai-modal-header-right {
+  display: flex; align-items: center; gap: 10px;
+}
+.btn-execute {
+  display: inline-flex; align-items: center;
+  height: 34px; padding: 0 20px; border-radius: 8px; border: none;
+  background: linear-gradient(135deg, #2ECC71, #27AE60);
+  color: #fff; font-size: 13px; font-weight: 600;
+  font-family: inherit; cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 2px 8px rgba(46,204,113,0.3);
+  letter-spacing: 0.2px;
+}
+.btn-execute:hover {
+  box-shadow: 0 4px 16px rgba(46,204,113,0.45);
+  transform: translateY(-1px);
+}
+.ai-modal-close {
+  width: 32px; height: 32px; border-radius: 8px; border: none;
+  background: transparent; display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--gray-5); transition: all .15s; line-height: 1;
+  font-family: inherit; cursor: pointer;
+}
+.ai-modal-close:hover { background: var(--red-soft); color: var(--red); }
+.ai-modal-body {
+  padding: 24px 28px 32px;
+}
+
+/* Chapter */
+.ai-chapter { margin-bottom: 28px; }
+.ai-chapter:last-child { margin-bottom: 0; }
+.ai-chapter-title {
+  font-size: 15px; font-weight: 700; color: var(--gray-9);
+  padding-left: 15px; border-left: 4px solid var(--primary);
+  margin-bottom: 14px; line-height: 22px;
+  letter-spacing: -0.1px;
+  display: flex; align-items: center;
+}
+.ai-chapter-label {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; line-height: 1;
+  color: var(--primary); background: var(--primary-soft);
+  padding: 0; width: 22px; height: 22px; border-radius: 5px; margin-right: 10px;
+  vertical-align: -2px;
+  flex-shrink: 0;
+}
+
+/* AI compact table */
+.ai-table-wrap { margin-bottom: 14px; overflow-x: auto; }
+.ai-table {
+  width: 100%; border-collapse: collapse; font-size: 12.5px;
+  border: 1px solid var(--gray-2); border-radius: 8px; overflow: hidden;
+}
+.ai-table thead th {
+  text-align: left; font-size: 11.5px; font-weight: 600; color: var(--gray-7);
+  padding: 8px 14px; background: #EBF4FD;
+  border-bottom: 2px solid var(--primary-soft);
+  white-space: nowrap;
+}
+.ai-table thead th.c { text-align: center; }
+.ai-table tbody td {
+  padding: 9px 14px; border-bottom: 1px solid var(--gray-1);
+  color: var(--gray-8); font-variant-numeric: tabular-nums;
+  background: #fff;
+}
+.ai-table tbody td.c { text-align: center; }
+.ai-table tbody td.r { text-align: right; font-variant-numeric: tabular-nums; }
+.ai-table thead th.r { text-align: right; }
+.ai-table tbody td.label-col { font-weight: 500; color: var(--gray-9); }
+.ai-table tbody tr:last-child td { border-bottom: none; }
+.ai-table tbody tr:hover td { background: #f8fafd; }
+
+/* Insight yellow block */
+.ai-insight {
+  background: #FFF8E1;
+  border-left: 4px solid #F9A825;
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  font-size: 12.5px; line-height: 1.8; color: var(--gray-7);
+}
+.ai-insight p { margin-bottom: 6px; }
+.ai-insight p:last-child { margin-bottom: 0; }
+.ai-insight .insight-label {
+  font-weight: 700; color: #F57F17; font-size: 12px;
+  display: inline-block; margin-bottom: 6px;
+}
+.ai-insight strong { color: var(--gray-9); }
+.ai-insight .highlight-up { color: var(--green); font-weight: 600; }
+.ai-insight .highlight-down { color: var(--red); font-weight: 600; }
+
 </style>
 </head>
 <body>
@@ -616,26 +792,33 @@ button { font-family: inherit; cursor: pointer; }
 </header>
 
 <aside class="sidebar">
+
   <ul class="sidebar-menu">
-    <li><a href="#">首页</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>首页</a></li>
+
     <li class="section-label">指标管理</li>
-    <li><a href="#">指标清单</a></li>
-    <li><a href="#">考核方案管理</a></li>
-    <li><a href="#">人员调整管理</a></li>
-    <li><a href="#">考核活动管理</a></li>
-    <li><a href="#">申报管理</a></li>
-    <li><a href="#">基础分评价</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>指标清单</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>考核方案管理</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>人员调整管理</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>考核活动管理</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>申报管理</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>基础分评价</a></li>
+
     <li class="sidebar-divider"></li>
-    <li><a href="#">得分查询</a></li>
-    <li><a href="#">系统管理</a></li>
-    <li><a href="#">领导得分管理</a></li>
-    <li><a href="#">异议管理</a></li>
+
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>得分查询</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>系统管理</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20v-2a4 4 0 014-4h8a4 4 0 014 4v2"/></svg>领导得分管理</a></li>
+    <li><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>异议管理</a></li>
+
     <li class="sidebar-divider"></li>
-    <li class="section active"><a href="#">履职情况分析</a></li>
+
+    <li class="section active"><a href="#"><svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>履职情况分析</a></li>
     <ul class="sub">
       <li class="sub-active"><a href="#">本院履职情况</a></li>
     </ul>
   </ul>
+
 </aside>
 
 <main class="main">
@@ -877,6 +1060,184 @@ button { font-family: inherit; cursor: pointer; }
 
 </main>
 
+
+<!-- ================================================================
+     AI 深度解析 MODAL
+     ================================================================ -->
+<div class="ai-modal-overlay" id="aiModalOverlay">
+  <div class="ai-modal-box">
+    <div class="ai-modal-header">
+      <span class="ai-modal-title">全员业务质效AI深度解析</span>
+      <div class="ai-modal-header-right">
+        <button class="btn-execute"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-2px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出下载</button>
+        <button class="ai-modal-close" onclick="closeAiModal()">&times;</button>
+      </div>
+    </div>
+    <div class="ai-modal-body">
+
+      <!-- 一、全局指标得分概况 -->
+      <div class="ai-chapter">
+        <div class="ai-chapter-title"><span class="ai-chapter-label">一</span>全局指标得分概况</div>
+        <div class="ai-table-wrap">
+          <table class="ai-table">
+            <thead>
+              <tr>
+                <th>业务条线</th>
+                <th class="r">条线得分</th>
+                <th class="r">总分</th>
+                <th class="r">占比</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="label-col">通用任务</td><td class="r">100</td><td class="r">100</td><td class="r">10%</td></tr>
+              <tr><td class="label-col">刑事检察</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+              <tr><td class="label-col">民事检察</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+              <tr><td class="label-col">行政检察</td><td class="r">200</td><td class="r">100</td><td class="r">20%</td></tr>
+              <tr><td class="label-col">公益诉讼检察</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+              <tr><td class="label-col">未成年人检察</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+              <tr><td class="label-col">控告检察</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+              <tr><td class="label-col">案件管理</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+              <tr><td class="label-col">检务管理</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+              <tr><td class="label-col">法律政策研究</td><td class="r">50</td><td class="r">100</td><td class="r">5%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ai-insight">
+          <div class="insight-label">数据化趋势研判</div>
+          <p>本期时效指标、公益诉讼类案件得分占比上升，刑事检察得分占比退回<span class="highlight-down">10个百分点</span>。行刑、公益诉讼积分较上季度增加，刑事检察占比退回<span class="highlight-down">7个百分点</span>。</p>
+          <p><strong>结论：</strong>整体得分趋势向好，主要增长来自行刑、公益诉讼。</p>
+        </div>
+      </div>
+
+      <!-- 二、案件质量评价 -->
+      <div class="ai-chapter">
+        <div class="ai-chapter-title"><span class="ai-chapter-label">二</span>案件质量评价</div>
+        <div class="ai-table-wrap">
+          <table class="ai-table">
+            <thead>
+              <tr><th>业务指标</th><th class="r">数量</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="label-col">优秀案件评分指数</td><td class="r">100</td></tr>
+              <tr><td class="label-col">优秀案件得分倾向</td><td class="r">50</td></tr>
+              <tr><td class="label-col">优秀案件得分倾向认为优质指标项</td><td class="r">50</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ai-insight">
+          <div class="insight-label">数据化趋势研判</div>
+          <p>案件管理线各分支项目环比变化不明显。本季度刑行质量提高，优秀案件产出量环比提升约<span class="highlight-up">8%</span>，优质案件占比比上年同期提升。</p>
+          <p><strong>结论：</strong>案件质量管理整体稳定，刑行质量提升显著，评查效率增强。</p>
+        </div>
+      </div>
+
+      <!-- 三、指导性、典型案例产出 -->
+      <div class="ai-chapter">
+        <div class="ai-chapter-title"><span class="ai-chapter-label">三</span>指导性、典型案例产出</div>
+        <div class="ai-table-wrap">
+          <table class="ai-table">
+            <thead>
+              <tr><th>业务指标</th><th class="r">数量</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="label-col">指导性案例、典型案例发布数</td><td class="r">100</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ai-insight">
+          <div class="insight-label">数据化趋势研判</div>
+          <p>典型案例产出呈现阶段性突破特征。典型案例来源高度集中，<strong>八成以上</strong>来自行刑、公益诉讼监督业务。</p>
+          <p><strong>结论：</strong>典型案例集中来源于行刑、公益诉讼；其他条线产出量仍需提升。</p>
+        </div>
+      </div>
+
+      <!-- 四、表彰奖励及工作经验 -->
+      <div class="ai-chapter">
+        <div class="ai-chapter-title"><span class="ai-chapter-label">四</span>表彰奖励及工作经验</div>
+        <div class="ai-table-wrap">
+          <table class="ai-table">
+            <thead>
+              <tr><th>业务指标</th><th class="r">数量</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="label-col">办案或其他业务工作受到表彰奖励数</td><td class="r">100</td></tr>
+              <tr><td class="label-col">先进工作经验</td><td class="r">45</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ai-insight">
+          <div class="insight-label">数据化趋势研判</div>
+          <p>表彰奖励与工作经验高度关联，行刑、公益诉讼业务线获<strong>七成以上</strong>表彰。</p>
+          <p><strong>结论：</strong>表彰奖励集中于行刑、公益诉讼条线，需加强其他条线激励与推广。</p>
+        </div>
+      </div>
+
+      <!-- 五、大数据法律监督模型建设 -->
+      <div class="ai-chapter">
+        <div class="ai-chapter-title"><span class="ai-chapter-label">五</span>大数据法律监督模型建设</div>
+        <div class="ai-table-wrap">
+          <table class="ai-table">
+            <thead>
+              <tr><th>业务指标</th><th class="r">数量</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="label-col">研发大数据法律监督模型数</td><td class="r">100</td></tr>
+              <tr><td class="label-col">法律监督模型应用成效数</td><td class="r">45</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ai-insight">
+          <div class="insight-label">数据化趋势研判</div>
+          <p>数字化监督工作难度大幅度增强。数字监督成果集中于行刑、公益诉讼条线，刑事、民事条线模型研发与应用产出较低。</p>
+          <p><strong>结论：</strong>大数据模型研发成果丰硕，但刑事、民事条线数字化应用滞后，差距拉大。</p>
+        </div>
+      </div>
+
+      <!-- 六、理论与实务研修 -->
+      <div class="ai-chapter">
+        <div class="ai-chapter-title"><span class="ai-chapter-label">六</span>理论与实务研修</div>
+        <div class="ai-table-wrap">
+          <table class="ai-table">
+            <thead>
+              <tr><th>业务指标</th><th class="r">数量</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="label-col">理论与实务研修数</td><td class="r">100</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ai-insight">
+          <div class="insight-label">数据化趋势研判</div>
+          <p>研修参与人次均值波动趋势增大，单月参与量超过上一季度总和。研修参与人员集中于行刑、公益诉讼条线，其余条线参与度极低。</p>
+          <p><strong>结论：</strong>研修活动参与度激增但两极分化，需推动全员覆盖与均衡参与。</p>
+        </div>
+      </div>
+
+      <!-- 七、办案负面风险指标 -->
+      <div class="ai-chapter">
+        <div class="ai-chapter-title"><span class="ai-chapter-label">七</span>办案负面风险指标</div>
+        <div class="ai-table-wrap">
+          <table class="ai-table">
+            <thead>
+              <tr><th>业务指标</th><th class="r">数据</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="label-col">办案或其他业务工作负面影响数</td><td class="r">100</td></tr>
+              <tr><td class="label-col">违规问责处罚数</td><td class="r">10</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ai-insight">
+          <div class="insight-label">数据化趋势研判</div>
+          <p>负面事件数据持续降低，本期负面案例已降至个位数。负面事件分布呈条线集聚特征，<strong>八成以上</strong>集中于有事实违规业务。</p>
+          <p><strong>结论：</strong>负面事件数量持续下降，控制良好；但需强化监督与问责机制。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ================================================================
      MODAL
      ================================================================ -->
@@ -1096,6 +1457,28 @@ button { font-family: inherit; cursor: pointer; }
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
+  // ==============================
+  // AI 深度解析 MODAL
+  // ==============================
+  window.closeAiModal = function() {
+    document.getElementById('aiModalOverlay').classList.remove('open');
+  };
+  document.getElementById('aiModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAiModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('aiModalOverlay').classList.contains('open')) {
+      closeAiModal();
+    }
+  });
+
+  var aiBtn = document.querySelector('.ai-btn');
+  if (aiBtn) {
+    aiBtn.addEventListener('click', function() {
+      document.getElementById('aiModalOverlay').classList.add('open');
+    });
+  }
+
 })();
 </script>
 
